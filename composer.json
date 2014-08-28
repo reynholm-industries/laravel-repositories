@@ -1,0 +1,20 @@
+{
+    "name": "reynholm/laravel-repositories",
+    "description": "Provides a easy way to create your laravel repositories",
+    "authors": [
+        {
+            "name": "Carlos Goce",
+            "email": "carlosgoce@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Reynholm\\LaravelRepositories": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
