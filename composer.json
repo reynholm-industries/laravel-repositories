@@ -1,6 +1,6 @@
 {
     "name": "reynholm/laravel-repositories",
-    "description": "Provides a easy way to create your laravel repositories",
+    "description": "Provides an easy way to create your laravel repositories",
     "authors": [
         {
             "name": "Carlos Goce",
@@ -9,7 +9,15 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "illuminate/support": "4.*",
+        "illuminate/database": "4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.3",
+        "mockery/mockery": "0.9.1",
+        "phpspec/prophecy-phpunit": "~1.0",
+        "codeception/specify": "dev-master",
+        "codeception/verify": "dev-master"
     },
     "autoload": {
         "psr-0": {
