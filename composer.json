@@ -4,7 +4,9 @@
     "authors": [
         {
             "name": "Carlos Goce",
-            "email": "carlosgoce@gmail.com"
+            "email": "carlosgoce@gmail.com",
+            "homepage": "http://www.carlosgoce.com",
+            "role": "Developer"
         }
     ],
     "require": {
