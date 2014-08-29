@@ -50,7 +50,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function find($id, array $columns = array())
     {
-        $searchCriteria = array($this->primaryKey => $id);
+        $searchCriteria = [ [$this->primaryKey, '=', $id] ];
 
         return $this->findOne($searchCriteria, $columns);
     }
@@ -62,7 +62,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     {
         $entity = $this->find($id, $columns);
 
-        if ( is_null($entity) ) {
+        if ( empty($entity) ) {
             throw new EntityNotFoundException();
         }
 
@@ -80,8 +80,8 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $builder = $builder->select($columns);
         }
 
-        foreach ($criteria as $search => $value) {
-            $builder = $builder->where($search, '=', $value);
+        foreach ($criteria as $search) {
+            $builder = $builder->where($search[0], $search[1], $search[2]);
         }
 
         try {
@@ -96,7 +96,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         }
 
         if ( empty($result) ) {
-            return null;
+            return array();
         }
 
         return $result;

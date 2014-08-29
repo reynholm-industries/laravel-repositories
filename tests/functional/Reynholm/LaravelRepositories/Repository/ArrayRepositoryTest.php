@@ -65,8 +65,8 @@ class ArrayRepositoryTest extends BaseTests {
         });
 
         $this->specify('Search for an unexistent id returns null', function() {            
-            expect( $this->arrayRepository->find(999999) )->equals(null);
-            expect( $this->arrayRepository->find(999999, array('name')) )->equals(null);
+            expect( $this->arrayRepository->find(999999) )->equals([]);
+            expect( $this->arrayRepository->find(999999, array('name')) )->equals([]);
         });
 
          /** 
@@ -104,7 +104,28 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testFindOne()
     {
-        $this->markTestIncomplete('To do');
+        $this->specify('Find one by 1 criteria', function() {
+            $criteria = [ ['name', '=', 'goce'] ];
+
+            expect( $this->arrayRepository->findOne($criteria) )->equals( $this->userFixtures->getFixtureId(1) );
+        });
+
+        $this->specify('Find one by 2 criterias', function() {
+            $criteria = [ ['name', '=', 'goce'], ['age', '>', 20] ];
+
+            expect( $this->arrayRepository->findOne($criteria) )->equals( $this->userFixtures->getFixtureId(1) );
+        });
+
+        $this->specify('Find one with specific columns', function() {
+            $criteria = [ ['name', '=', 'goce'] ];
+
+            expect( $this->arrayRepository->findOne($criteria, array('name')) )->equals( array('name' => 'goce') );
+        });
+
+        $this->specify('Find one when entity is not found returns an empty array', function() {
+            $criteria = [ ['name', '=', 'user-that-does-not-exists'] ];
+            expect( $this->arrayRepository->findOne($criteria) )->equals([]);
+        });
     }
 
 }
