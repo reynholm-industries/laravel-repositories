@@ -19,7 +19,8 @@
         "mockery/mockery": "0.9.1",
         "phpspec/prophecy-phpunit": "~1.0",
         "codeception/specify": "dev-master",
-        "codeception/verify": "dev-master"
+        "codeception/verify": "dev-master",
+        "orchestra/testbench": "2.2.1"
     },
     "autoload": {
         "psr-0": {

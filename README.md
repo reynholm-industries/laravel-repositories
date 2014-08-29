@@ -14,10 +14,10 @@ to do
 
 # Usage
 to do
-Simply extend one of the currently Reynholm\LaravelRepositories\Implementation
+Simply extend one of the currently Reynholm\LaravelRepositories\Repository
 and provide it with a configured builder instance.
 Currently available:
-· Reynholm\LaravelRepositories\Implementation\ArrayRepository
+· Reynholm\LaravelRepositories\Repository\ArrayRepository
   Allows you to query and retrieve data only with arrays
 
 # Future
