@@ -150,4 +150,24 @@ class ArrayRepositoryTest extends BaseTests {
         }, ['throws' => new EntityNotFoundException()]);
     }
 
+    public function testValidate()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testValidateOrFail()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testValidateMany()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testValidateManyOrFail()
+    {
+        $this->markTestIncomplete();
+    }
+
 }

@@ -120,5 +120,44 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function validate(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateOrFail(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateMany(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateManyOrFail(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValidationErrors()
+    {
+
+    }
 
 }
