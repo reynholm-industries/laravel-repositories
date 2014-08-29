@@ -33,7 +33,7 @@ Specify a connection string if is not the laravel's default connection.
 Specify the database table.
 
 Currently implemented methods:
-```
+```php
     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
