@@ -64,6 +64,18 @@ Currently implemented methods:
      * @throws InvalidCriteriaParametersException
      */
     public function findOne(array $criteria, array $columns = array());
+
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function delete($id);
+
+    /**
+     * @param int $id
+     * @throw EntityNotFoundException
+     */
+    public function deleteOrFail($id);
 ```
 
 ## Extending the repository with your custom methods

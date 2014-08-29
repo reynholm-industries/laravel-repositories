@@ -102,4 +102,23 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($id)
+    {
+        return $this->builder->where($this->primaryKey, '=', $id)->delete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteOrFail($id)
+    {
+        if ( ! $this->delete($id) ) {
+            throw new EntityNotFoundException;
+        }
+    }
+
+
 }

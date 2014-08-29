@@ -70,7 +70,7 @@ class ArrayRepositoryTest extends BaseTests {
         });
 
          /** 
-         * @todo Seems to don't work with in memory sqlite database 
+         * @todo Seems to don't work with in memory sqlite database. look for a workaround
          */
         /*$this->specify('Search with a unexistent column throws exception', function() {            
             $this->arrayRepository->find(1, array('this_does_not_exists'));
@@ -126,6 +126,28 @@ class ArrayRepositoryTest extends BaseTests {
             $criteria = [ ['name', '=', 'user-that-does-not-exists'] ];
             expect( $this->arrayRepository->findOne($criteria) )->equals([]);
         });
+    }
+
+    public function testDelete()
+    {
+        $this->specify('Delete one entity', function() {
+            expect_that($this->arrayRepository->delete(1));
+        });
+
+        $this->specify('Delete unexistent entity returns false', function() {
+            expect_not($this->arrayRepository->delete(99999));
+        });
+    }
+
+    public function testDeleteOrFail()
+    {
+        $this->specify('Delete one entity does not throw exception', function() {
+            $this->arrayRepository->deleteOrFail(1);
+        });
+
+        $this->specify('Delete unexistent entity throws exception', function() {
+            $this->arrayRepository->deleteOrFail(99999);
+        }, ['throws' => new EntityNotFoundException()]);
     }
 
 }
