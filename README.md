@@ -22,7 +22,7 @@ Currently available:
   tight coupling with laravel or eloquent
 
 ## Example
-```
+```php
 class UserArrayRepository extends ArrayRepository {
 	//protected $connection = 'default';
     protected $tableName  = 'users';
@@ -33,7 +33,7 @@ Specify a connection string if is not the laravel's default connection.
 Specify the database table.
 
 Currently implemented methods:
-```
+```php
     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
@@ -80,13 +80,13 @@ Currently implemented methods:
 
 ## Extending the repository with your custom methods
 You can grab the builder instance with
-```
-getBuilder
+```php
+$this->getBuilder()
 ```
 to create your custom repository methods.
 
 ### Example
-```
+```php
 class MyUsersRepository extends ArrayRepository
 {
     public function getActiveUsers()
