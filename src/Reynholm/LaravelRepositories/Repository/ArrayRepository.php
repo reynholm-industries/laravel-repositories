@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
 
+use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
@@ -20,8 +21,11 @@ use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
  * @property string  $connection
  * @property string  $tableName
  *
+ * @todo test Column not found exception Is not tested on any method
+ *       Seems to be not working with sqlite
  */
-abstract class ArrayRepository {
+abstract class ArrayRepository implements LaravelRepositoryInterface
+{
 
     protected $connection = 'default';
     protected $primaryKey = 'id';
@@ -42,11 +46,7 @@ abstract class ArrayRepository {
     }    
 
     /**
-     * @param int $id
-     * @param array $columns Restrict columns that you want to retrieve
-     * @return array
-     * @throws ColumnNotFoundException 
-     * @todo test Exception
+     * {@inheritdoc}
      */
     public function find($id, array $columns = array())
     {
@@ -56,12 +56,7 @@ abstract class ArrayRepository {
     }
 
     /**
-     * @param int $id
-     * @param array $columns Restrict columns that you want to retrieve
-     * @return array
-     * @throws ColumnNotFoundException
-     * @throws EntityNotFoundException
-     * @todo test Column not found exception
+     * {@inheritdoc}
      */
     public function findOrFail($id, array $columns = array())
     {
@@ -75,18 +70,9 @@ abstract class ArrayRepository {
     }
 
     /**
-     * @param array $criteria
-     * Ex.:
-     * array(
-     *     array('name', '=', 'carlos'),
-     *     array('age',  '>', 20),
-     * )
-     * @param array $columns Restrict columns that you want to retrieve
-     * @return array
-     * @throws ColumnNotFoundException
-     * @throws InvalidCriteriaParametersException
+     * {@inheritdoc}
      */
-    public function findOne(array $searchCriteria, array $columns = array())
+    public function findOne(array $criteria, array $columns = array())
     {
         $builder = $this->builder;
 
@@ -94,7 +80,7 @@ abstract class ArrayRepository {
             $builder = $builder->select($columns);
         }
 
-        foreach ($searchCriteria as $search => $value) {
+        foreach ($criteria as $search => $value) {
             $builder = $builder->where($search, '=', $value);
         }
 

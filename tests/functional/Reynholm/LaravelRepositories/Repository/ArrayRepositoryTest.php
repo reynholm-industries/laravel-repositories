@@ -102,4 +102,9 @@ class ArrayRepositoryTest extends BaseTests {
         }, ['throws' => new EntityNotFoundException() ] );
     }
 
+    public function testFindOne()
+    {
+        $this->markTestIncomplete('To do');
+    }
+
 }
