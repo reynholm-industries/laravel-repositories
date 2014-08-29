@@ -22,7 +22,7 @@ Currently available:
   tight coupling with laravel or eloquent
 
 ## Example
-```
+```php
 class UserArrayRepository extends ArrayRepository {
 	//protected $connection = 'default';
     protected $tableName  = 'users';
@@ -68,13 +68,13 @@ Currently implemented methods:
 
 ## Extending the repository with your custom methods
 You can grab the builder instance with
-```
-getBuilder
+```php
+$this->getBuilder()
 ```
 to create your custom repository methods.
 
 ### Example
-```
+```php
 class MyUsersRepository extends ArrayRepository
 {
     public function getActiveUsers()
