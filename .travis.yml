@@ -9,4 +9,11 @@ before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
+after_script:
+  - vendor/bin/test-reporter
+
 script: phpunit
+
+addons:
+  code_climate:
+    repo_token: b1e653a6b0fd9365df44fb062ac5cf5afe63c84fecd37e4dc97fbef00febf553
