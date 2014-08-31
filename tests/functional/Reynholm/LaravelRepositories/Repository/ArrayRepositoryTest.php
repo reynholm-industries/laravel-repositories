@@ -152,10 +152,42 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testValidate()
     {
+        $validData = array('name' => 'carlos', 'age' => 32);
+        $invalidData = array('name' => 'goce'); //Name is not unique and age is required
+
+        $this->specify('Returns empty array if no validations where performed', function() {
+           expect( $this->arrayRepository->getValidationErrors() )->equals( array() );
+        });
+
+        $this->specify('Returns true when data is valid', function() use ($validData) {
+            expect_that( $this->arrayRepository->validate($validData) );
+        });
+
+        $this->specify('Returns false when data is not valid', function() use ($invalidData) {
+            expect_not( $this->arrayRepository->validate($invalidData) );
+        });
+
+        //This should be tested in a better way
+        $this->specify('Returns validation errors if there are any', function() use ($validData, $invalidData) {
+            expect_that( $this->arrayRepository->validate($validData) );
+            expect( $this->arrayRepository->getValidationErrors() )->equals( array() );
+
+            expect_not( $this->arrayRepository->validate($invalidData) );
+            expect( count($this->arrayRepository->getValidationErrors()['failed'] ) )->equals(2);
+        });
+    }
+
+    public function testValidateWithCustomRules()
+    {
         $this->markTestIncomplete();
     }
 
     public function testValidateOrFail()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testValidateWithCustomRulesOrFail()
     {
         $this->markTestIncomplete();
     }
@@ -165,7 +197,17 @@ class ArrayRepositoryTest extends BaseTests {
         $this->markTestIncomplete();
     }
 
+    public function testValidateManyWithCustomRules()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testValidateManyOrFail()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testValidateManyWithCustomRulesOrFail()
     {
         $this->markTestIncomplete();
     }

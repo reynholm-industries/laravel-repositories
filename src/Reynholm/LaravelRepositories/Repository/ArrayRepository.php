@@ -20,6 +20,8 @@ use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
  * @property Builder $builder
  * @property string  $connection
  * @property string  $tableName
+ * @property array   $validationErrors If validation fails errors will be stored here.
+ *                   Is an array with 2 keys, messages (fields that failed with message), and failed (fails without message)
  *
  * @todo test Column not found exception Is not tested on any method
  *       Seems to be not working with sqlite
@@ -30,6 +32,8 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     protected $connection = 'default';
     protected $primaryKey = 'id';
     protected $tableName;
+    protected $rules = array();
+    protected $validationErrors = array();
 
     protected $builder;
 
@@ -125,6 +129,28 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validate(array $data)
     {
+        $validator = \Validator::make($data, $this->rules);
+
+        if ( $validator->fails() )
+        {
+            $this->validationErrors = array(
+                'messages' => $validator->messages(),
+                'failed' => $validator->failed(),
+            );
+
+            return false;
+        }
+
+        $this->validationErrors = array();
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateWithCustomRules(array $data, array $rules)
+    {
 
     }
 
@@ -132,6 +158,14 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      * {@inheritdoc}
      */
     public function validateOrFail(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateWithCustomRulesOrFail(array $data, array $rules)
     {
 
     }
@@ -147,7 +181,23 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     /**
      * {@inheritdoc}
      */
+    public function validateManyWithCustomRules(array $data, array $rules)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function validateManyOrFail(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateManyWithCustomRulesOrFail(array $data, array $rules)
     {
 
     }
@@ -157,7 +207,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function getValidationErrors()
     {
-
+        return $this->validationErrors;
     }
 
 }

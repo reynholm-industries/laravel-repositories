@@ -78,6 +78,35 @@ Currently implemented methods:
     public function deleteOrFail($id);
 ```
 
+## Validation
+You can validate your data with the validate methods.
+Specify the rules of your repository in the rules property:
+```php
+class UserArrayRepository extends ArrayRepository {
+
+    protected $connection = 'default';
+    protected $tableName  = 'users';
+    protected $rules      = array(
+        'name' => 'required|min:5|unique:users',
+        'age'  => 'required|integer|between:0,120',
+    );
+}
+```
+
+Examples:
+```php a boolean indicating if the data passed or not.
+if ($this->arrayRepository->validate($validData)) {
+    //The data is valid
+}
+else {
+    //The data is not valid
+    //You can get the validation failed or messages this way:
+    $errors = $this->arrayRepository->getValidationErrors()
+    //$errors['messages'] Contains the LaravelViewBag with the description of the errors
+    //$errors['failed'] Contains the failed validation rules without messages
+}
+```
+
 ## Extending the repository with your custom methods
 You can grab the builder instance with
 ```php
