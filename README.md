@@ -110,7 +110,6 @@ class UserArrayRepository extends ArrayRepository {
 
 Examples:
 ```php 
-a boolean indicating if the data passed or not.
 if ($this->arrayRepository->validate($validData)) {
     //The data is valid
 }
