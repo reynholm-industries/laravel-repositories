@@ -151,7 +151,21 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateWithCustomRules(array $data, array $rules)
     {
+        $validator = \Validator::make($data, $rules);
 
+        if ( $validator->fails() )
+        {
+            $this->validationErrors = array(
+                'messages' => $validator->messages(),
+                'failed' => $validator->failed(),
+            );
+
+            return false;
+        }
+
+        $this->validationErrors = array();
+
+        return true;
     }
 
     /**

@@ -179,7 +179,26 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testValidateWithCustomRules()
     {
-        $this->markTestIncomplete();
+        $nameRequiredRules = ['name' => 'required|min:5|unique:users'];
+        $nameAndAgeRequiredRules = ['name' => 'required|min:5|unique:users'];
+
+        //the repository contains a required age constraint so if rules where not overrided it should
+        //return false
+        $this->specify('Returns true when data is valid', function() use ($nameRequiredRules) {
+            expect_that( $this->arrayRepository->validateWithCustomRules(['name' => 'carlos'], $nameRequiredRules) );
+        });
+
+        $this->specify('Returns false when data is not valid', function() use ($nameAndAgeRequiredRules) {
+            expect_not( $this->arrayRepository->validateWithCustomRules(['age' => 30], $nameAndAgeRequiredRules) );
+        });
+
+        $this->specify('Returns validation errors if there are any', function() use ($nameRequiredRules, $nameAndAgeRequiredRules) {
+            expect_that( $this->arrayRepository->validateWithCustomRules(['name' => 'carlos'], $nameRequiredRules) );
+            expect( $this->arrayRepository->getValidationErrors() )->equals( array() );
+
+            expect_not( $this->arrayRepository->validate(['name' => 'carlos'], $nameAndAgeRequiredRules) );
+            expect( count($this->arrayRepository->getValidationErrors()['failed'] ) )->equals(1);
+        });
     }
 
     public function testValidateOrFail()
