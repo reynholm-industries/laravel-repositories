@@ -36,13 +36,7 @@ class TableNameGuesser
      */
     private function removeNamespace($className)
     {
-        $pieces = explode('\\', $className);
-
-        if ($pieces > 1) {
-            return last($pieces);
-        }
-
-        return $className;
+        return last( explode('\\', $className) );
     }
 
 } 
