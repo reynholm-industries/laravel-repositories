@@ -21,13 +21,7 @@ class TableNameGuesser
      * @return string
      */
     private function pluralize($string) {
-        $numberOfUppercaseLetters = strlen(preg_replace('![^A-Z]+!', '', $string));
-
-        if ($numberOfUppercaseLetters > 1) {
-            return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string)) . 's';
-        }
-
-        return strtolower($string) . 's';
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string)) . 's';
     }
 
     /**
