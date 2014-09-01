@@ -262,22 +262,125 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testValidateMany()
     {
-        $this->markTestIncomplete();
+        $validData = array(
+            ['name' => 'carlos', 'age' => 50],
+            ['name' => 'freddy', 'age' => 39],
+            ['name' => 'ricky',  'age' => 70],
+        );
+
+        $invalidData = array(
+            ['name' => 'carlos',],
+            ['name' => 'freddy', 'age' => 39],
+            ['age' => 70],
+        );
+
+        $this->specify('Returns true when data is valid and there are no errors',
+            function() use ($validData)  {
+                expect_that($this->arrayRepository->validateMany($validData));
+            });
+
+        $this->specify('Returns false when data is not valid and errors are written',
+            function() use ($invalidData) {
+                expect_not($this->arrayRepository->validateMany($invalidData));
+                expect(count($this->arrayRepository->getValidationErrors()))->equals(2);
+            });
     }
 
     public function testValidateManyWithCustomRules()
     {
-        $this->markTestIncomplete();
+        $validData = array(
+            ['name' => 'carlos', 'age' => 50],
+            ['name' => 'freddy', 'age' => 39],
+            ['name' => 'ricky',  'age' => 70],
+        );
+
+        $invalidData = array(
+            ['name' => 'carlos',],
+            ['name' => 'freddy', 'age' => 39],
+            ['age' => 70],
+        );
+
+        $rules = array(
+            'name' => 'required|min:5|unique:users',
+            'age'  => 'required|integer|between:0,120',
+        );
+
+        $this->specify('Returns true when data is valid and there are no errors',
+            function() use ($validData, $rules)  {
+            expect_that($this->arrayRepository->validateManyWithCustomRules($validData, $rules));
+        });
+
+        $this->specify('Returns false when data is not valid and errors are written',
+            function() use ($invalidData, $rules) {
+            expect_not($this->arrayRepository->validateManyWithCustomRules($invalidData, $rules));
+            expect(count($this->arrayRepository->getValidationErrors()))->equals(2);
+        });
     }
 
     public function testValidateManyOrFail()
     {
-        $this->markTestIncomplete();
+        $validData = array(
+            ['name' => 'carlos', 'age' => 50],
+            ['name' => 'freddy', 'age' => 39],
+            ['name' => 'ricky',  'age' => 70],
+        );
+
+        $invalidData = array(
+            ['name' => 'carlos',],
+            ['name' => 'freddy', 'age' => 39],
+            ['age' => 70],
+        );
+
+        $this->specify('If data is valid nothing should happen', function() use($validData) {
+            expect( $this->arrayRepository->validateManyOrFail($validData) )->equals(null);
+        });
+
+        $this->specify('If data is not valid throw exception', function() use($invalidData) {
+            $this->arrayRepository->validateManyOrFail($invalidData);
+        }, ['throws' => new DataNotValidException()]);
+
     }
 
     public function testValidateManyWithCustomRulesOrFail()
     {
-        $this->markTestIncomplete();
+        $validData = array(
+            ['name' => 'carlos', 'age' => 50],
+            ['name' => 'freddy', 'age' => 39],
+            ['name' => 'ricky',  'age' => 70],
+        );
+
+        $invalidData = array(
+            ['name' => 'carlos',],
+            ['name' => 'freddy', 'age' => 39],
+            ['age' => 70],
+        );
+
+        $rules = array(
+            'name' => 'required|min:5|unique:users',
+            'age'  => 'required|integer|between:0,120',
+        );
+
+        $this->specify('Returns nothing when data is valid',
+            function() use ($validData, $rules)  {
+                expect($this->arrayRepository->validateManyWithCustomRulesOrFail($validData, $rules))->equals(null);
+        });
+
+        $this->specify('Throws exception when data is not valid',
+            function() use ($invalidData, $rules) {
+            $this->arrayRepository->validateManyWithCustomRulesOrFail($invalidData, $rules);
+        }, ['throws' => new DataNotValidException()] );
+
+        $this->specify('The errors should be saved anyway even if exception is throwed', function() use ($invalidData, $rules) {
+
+            try {
+                $this->arrayRepository->validateManyWithCustomRulesOrFail($invalidData, $rules);
+            }
+            catch(DataNotValidException $e) {
+
+            }
+
+            expect( count($this->arrayRepository->getValidationErrors()) )->equals(2);
+        });
     }
 
 }

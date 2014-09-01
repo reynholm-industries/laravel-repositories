@@ -221,7 +221,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateMany(array $data)
     {
-
+        return $this->validateManyWithCustomRules($data, $this->rules);
     }
 
     /**
@@ -229,7 +229,25 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateManyWithCustomRules(array $data, array $rules)
     {
+        $dataIsValid = true;
+        $this->validationErrors = array();
 
+        foreach ($data as $row) {
+
+            $validator = \Validator::make($row, $rules);
+
+            if ( $validator->fails() )
+            {
+                $this->validationErrors[] = array(
+                    'messages' => $validator->messages(),
+                    'failed'   => $validator->failed(),
+                );
+
+                $dataIsValid = false;
+            }
+        }
+
+        return $dataIsValid;
     }
 
     /**
@@ -237,7 +255,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateManyOrFail(array $data)
     {
-
+        if ( ! $this->validateMany($data) ) {
+            throw new DataNotValidException();
+        }
     }
 
     /**
@@ -245,7 +265,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateManyWithCustomRulesOrFail(array $data, array $rules)
     {
-
+        if ( ! $this->validateManyWithCustomRules($data, $rules)) {
+            throw new DataNotValidException();
+        }
     }
 
     /**
