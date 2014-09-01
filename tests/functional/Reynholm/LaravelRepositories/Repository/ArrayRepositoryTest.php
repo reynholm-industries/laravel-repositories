@@ -243,6 +243,15 @@ class ArrayRepositoryTest extends BaseTests {
         });
     }
 
+    public function testUpdate()
+    {
+        $this->specify('Can update a resource by its id', function() {
+            expect( $this->arrayRepository->update(1, ['name' => 'charly', 'age' => '32']) )->equals(true);
+            expect($this->arrayRepository->findOrFail(1)['name'] )->equals('charly');
+            expect($this->arrayRepository->findOrFail(1)['age'] )->equals(32);
+        });
+    }
+
     public function testDelete()
     {
         $this->specify('Delete one entity', function() {

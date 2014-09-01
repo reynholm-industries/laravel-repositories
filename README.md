@@ -130,6 +130,14 @@ Currently implemented methods:
       */
      public function count(array $criteria = array());
 
+    /**
+     * Update a resource by its id
+     * @param int $id
+     * @param array $data
+     * @return boolean
+     */
+    public function update($id, array $data);
+
      /**
       * Validates the input array and stores all the errors,
       * them, you can get them with the getErrors() method

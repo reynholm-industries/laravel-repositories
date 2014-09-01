@@ -89,6 +89,14 @@ interface LaravelRepositoryInterface
     public function createMany(array $data, $force = false);
 
     /**
+     * Update a resource by its id
+     * @param int $id
+     * @param array $data
+     * @return boolean
+     */
+    public function update($id, array $data);
+
+    /**
      * @param array $criteria
      * Ex.:
      * array(

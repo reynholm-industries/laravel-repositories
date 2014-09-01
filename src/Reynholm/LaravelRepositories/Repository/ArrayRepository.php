@@ -175,7 +175,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function count(array $criteria = array())
     {
-        $builder = $this->builder;
+        $builder = $this->getBuilder();
 
         foreach ($criteria as $search) {
             $builder = $builder->where($search[0], $search[1], $search[2]);
@@ -187,9 +187,18 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     /**
      * {@inheritdoc}
      */
+    public function update($id, array $data)
+    {
+        return $this->getBuilder()->where($this->primaryKey, '=', $id)->update($data);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($id)
     {
-        return $this->builder->where($this->primaryKey, '=', $id)->delete();
+        return $this->getBuilder()->where($this->primaryKey, '=', $id)->delete();
     }
 
     /**
