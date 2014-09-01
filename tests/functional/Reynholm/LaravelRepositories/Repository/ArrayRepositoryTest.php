@@ -167,6 +167,15 @@ class ArrayRepositoryTest extends BaseTests {
         });
     }
 
+    public function testLists()
+    {
+        $this->specify('Can list with the given name and key', function() {
+            $expected = [1 => 'goce', 2 => 'morales', 3 => 'silvano'];
+
+            expect( $this->arrayRepository->lists('name', 'id') )->equals($expected);
+        });
+    }
+
     public function testCreate()
     {
         $validResource   = ['name' => 'hello', 'age' => 25];

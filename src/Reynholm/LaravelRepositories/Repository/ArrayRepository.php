@@ -6,7 +6,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
 
 use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
-use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 
@@ -21,9 +20,6 @@ use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
  * @property string  $tableName
  * @property array   $validationErrors If validation fails errors will be stored here.
  *                   Is an array with 2 keys, messages (fields that failed with message), and failed (fails without message)
- *
- * @todo test Column not found exception Is not tested on any method
- *       Seems to be not working with sqlite
  */
 abstract class ArrayRepository implements LaravelRepositoryInterface
 {
@@ -87,16 +83,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $builder = $builder->where($search[0], $search[1], $search[2]);
         }
 
-        try {
-            $result = (array)$builder->first();
-        }
-        catch(QueryException $queryException) {
-            if ( $queryException->getCode() === '42S22' ) { //columna no encontrada
-                throw new ColumnNotFoundException();
-            }
-
-            throw $queryException;
-        }
+        $result = (array)$builder->first();
 
         if ( empty($result) ) {
             return array();
@@ -130,16 +117,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             }
         }
 
-        try {
-            $result = $builder->get();
-        }
-        catch(QueryException $queryException) {
-            if ( $queryException->getCode() === '42S22' ) { //columna no encontrada
-                throw new ColumnNotFoundException();
-            }
-
-            throw $queryException;
-        }
+        $result = $builder->get();
 
         if ( empty($result) ) {
             return array();
@@ -154,6 +132,14 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     public function findAll(array $columns = array(), $limit = 0, array $orderBy = array())
     {
         return $this->findMany([], $columns, $limit, $orderBy);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lists($column, $key = null)
+    {
+        return $this->builder->lists($column, $key);
     }
 
     /**

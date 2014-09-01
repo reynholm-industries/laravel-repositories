@@ -2,10 +2,8 @@
 
 namespace Reynholm\LaravelRepositories\Behaviour;
 
-use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
-use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
 
 interface LaravelRepositoryInterface
 {
@@ -14,7 +12,6 @@ interface LaravelRepositoryInterface
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
      * @return array
-     * @throws ColumnNotFoundException
      */
     public function find($id, array $columns = array());
 
@@ -22,7 +19,6 @@ interface LaravelRepositoryInterface
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
      * @return array
-     * @throws ColumnNotFoundException
      * @throws EntityNotFoundException
      */
     public function findOrFail($id, array $columns = array());
@@ -36,7 +32,6 @@ interface LaravelRepositoryInterface
      * )
      * @param array $columns Restrict columns that you want to retrieve
      * @return array
-     * @throws ColumnNotFoundException
      */
     public function findOne(array $criteria, array $columns = array());
 
@@ -56,7 +51,6 @@ interface LaravelRepositoryInterface
      *     array('age', 'desc'),
      * )
      * @return array
-     * @throws ColumnNotFoundException
      */
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array());
 
@@ -76,6 +70,15 @@ interface LaravelRepositoryInterface
      * @throws DataNotValidException
      */
     public function create(array $data, $force = false);
+
+    /**
+     * Get an array with the values of a given column.
+     *
+     * @param  string  $column
+     * @param  string  $key
+     * @return array
+     */
+    public function lists($column, $key = null);
 
     /**
      * @param array $data The resources that you want to create
