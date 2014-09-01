@@ -1,5 +1,4 @@
-laravel-repositorie[![Code Climate](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/gpa.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)
-[![Test Coverage](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/coverage.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)s
+Laravel Repositories
 ====================
 
 [![Build Status](https://travis-ci.org/reynholm-industries/laravel-repositories.svg)](https://travis-ci.org/reynholm-industries/laravel-repositories)
