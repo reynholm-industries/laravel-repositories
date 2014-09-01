@@ -38,9 +38,6 @@ class UserArrayRepository extends ArrayRepository {
 }
 ```
 
-Specify a connection string if is not the laravel's default connection.
-Specify the database table.
-
 Currently implemented methods:
 ```php
 
