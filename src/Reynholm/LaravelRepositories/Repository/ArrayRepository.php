@@ -22,14 +22,13 @@ use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
  */
 abstract class ArrayRepository implements LaravelRepositoryInterface
 {
-
     protected $connection = 'default';
     protected $primaryKey = 'id';
     protected $tableName;
     protected $rules = array();
-    protected $validationErrors = array();
 
-    protected $builder;
+    private $validationErrors = array();
+    private $builder;
 
     function __construct()
     {
