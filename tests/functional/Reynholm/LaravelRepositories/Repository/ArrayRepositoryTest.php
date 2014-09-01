@@ -129,6 +129,23 @@ class ArrayRepositoryTest extends BaseTests {
         });
     }
 
+    public function testFindMany()
+    {
+        $this->specify('Can find all rows looking for fields', function() {
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1] ]) )->equals( $this->userFixtures->getFixtures() );
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1], ['name', '<>', 'hacker'] ]) )->equals( $this->userFixtures->getFixtures() );
+        });
+
+        $this->specify('Can limit the query results', function() {
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1] ], array(), 1) )->equals( [$this->userFixtures->getFixtures()[0]] );
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1], ['name', '<>', 'hacker'] ], array(), 3) )->equals( $this->userFixtures->getFixtures() );
+        });
+
+        $this->specify('Can order by any field, filtered and limited', function() {
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1] ], array('name'), 1, [['name', 'desc']]) )->equals( [['name' => 'silvano']] );
+        });
+    }
+
     public function testDelete()
     {
         $this->specify('Delete one entity', function() {
@@ -229,6 +246,18 @@ class ArrayRepositoryTest extends BaseTests {
         $this->specify('Should throw exception when data is not valid', function() use ($invalidData, $ageRequired) {
             expect( $this->arrayRepository->validateWithCustomRulesOrFail($invalidData, $ageRequired) )->equals(null);
         }, ['throws' => new DataNotValidException()]);
+
+        $this->specify('The errors should be saved anyway even if exception is throwed', function() use ($invalidData, $ageRequired) {
+
+            try {
+                $this->arrayRepository->validateWithCustomRulesOrFail($invalidData, $ageRequired);
+            }
+            catch(DataNotValidException $e) {
+
+            }
+
+            expect( count($this->arrayRepository->getValidationErrors()['failed']) )->equals(1);
+        });
     }
 
     public function testValidateMany()

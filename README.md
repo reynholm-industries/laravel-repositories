@@ -68,6 +68,26 @@ Currently implemented methods:
     public function findOne(array $criteria, array $columns = array());
 
     /**
+     * @param array $criteria
+     * Ex.:
+     * array(
+     *     array('name', '=', 'carlos'),
+     *     array('age',  '>', 20),
+     * )
+     * @param array $columns Restrict columns that you want to retrieve
+     * @param integer $limit
+     * @param array $orderBy
+     * Ex.:
+     * array(
+     *     array('name', 'asc'),
+     *     array('age', 'desc'),
+     * )
+     * @return array
+     * @throws ColumnNotFoundException
+     */
+    public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array());
+
+    /**
      * @param int $id
      * @return boolean
      */

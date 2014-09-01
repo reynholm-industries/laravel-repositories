@@ -110,6 +110,47 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     /**
      * {@inheritdoc}
      */
+    public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array())
+    {
+        $builder = $this->builder;
+
+        if ( ! empty($columns) ) {
+            $builder = $builder->select($columns);
+        }
+
+        $builder = $builder->limit($limit);
+
+        foreach ($criteria as $search) {
+            $builder = $builder->where($search[0], $search[1], $search[2]);
+        }
+
+        if ( ! empty($orderBy) ) {
+            foreach ($orderBy as $orderField) {
+                $builder->orderBy($orderField[0], $orderField[1]);
+            }
+        }
+
+        try {
+            $result = $builder->get();
+        }
+        catch(QueryException $queryException) {
+            if ( $queryException->getCode() === '42S22' ) { //columna no encontrada
+                throw new ColumnNotFoundException();
+            }
+
+            throw $queryException;
+        }
+
+        if ( empty($result) ) {
+            return array();
+        }
+
+        return $this->objectsToArray($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($id)
     {
         return $this->builder->where($this->primaryKey, '=', $id)->delete();
@@ -213,6 +254,21 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     public function getValidationErrors()
     {
         return $this->validationErrors;
+    }
+
+    /**
+     * Used to convert the stdClass array coming from the laravel query builder
+     * to an array
+     * @param array $data
+     * @return array
+     */
+    protected function objectsToArray($data)
+    {
+        array_walk($data, function(&$row) {
+            $row = (array)$row;
+        });
+
+        return $data;
     }
 
 }
