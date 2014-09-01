@@ -1,8 +1,7 @@
-laravel-repositories
+laravel-repositorie[![Code Climate](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/gpa.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)
+[![Test Coverage](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/coverage.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)s
 ====================
 
-[![Code Climate](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/gpa.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)
-[![Test Coverage](https://codeclimate.com/github/reynholm-industries/laravel-repositories/badges/coverage.svg)](https://codeclimate.com/github/reynholm-industries/laravel-repositories)
 [![Build Status](https://travis-ci.org/reynholm-industries/laravel-repositories.svg)](https://travis-ci.org/reynholm-industries/laravel-repositories)
 
 Repository pattern for Laravel

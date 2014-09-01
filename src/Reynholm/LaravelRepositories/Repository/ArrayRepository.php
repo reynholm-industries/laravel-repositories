@@ -2,7 +2,6 @@
 
 namespace Reynholm\LaravelRepositories\Repository;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
 
@@ -10,7 +9,6 @@ use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
-use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
 
 /**
  * Class ArrayBasedRepository
