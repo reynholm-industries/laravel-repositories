@@ -18,6 +18,7 @@ class TableNameGuesserTest extends BaseTests {
     }
 
     public function testGuess() {
+
         $this->specify('Can guess table name', function() {
 
             $useCases = array(
@@ -26,11 +27,16 @@ class TableNameGuesserTest extends BaseTests {
                 'InvoiceRowRepository'  => 'invoice_rows',
                 'ProductBrand'          => 'product_brands',
                 'CustomerHistoryLog'    => 'customer_history_logs',
+
+                //Namespaces are removed aswell
+                'Reynholm\Repository\UserRepository' => 'users',
+                'Reynholm\\Repository\\Product'      => 'products',
             );
 
             foreach ($useCases as $useCase => $expected) {
                 expect($this->guesser->guess($useCase))->equals($expected);
             }
+
         });
     }
 

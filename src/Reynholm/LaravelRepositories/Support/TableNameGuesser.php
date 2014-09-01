@@ -12,6 +12,7 @@ class TableNameGuesser
      */
     public function guess($className)
     {
+        $className = $this->removeNamespace($className);
         return $this->pluralize(preg_replace("@(repository|Repository)@", "", $className));
     }
 
@@ -27,6 +28,21 @@ class TableNameGuesser
         }
 
         return strtolower($string) . 's';
+    }
+
+    /**
+     * @param string $className
+     * @return string
+     */
+    private function removeNamespace($className)
+    {
+        $pieces = explode('\\', $className);
+
+        if ($pieces > 1) {
+            return last($pieces);
+        }
+
+        return $className;
     }
 
 } 
