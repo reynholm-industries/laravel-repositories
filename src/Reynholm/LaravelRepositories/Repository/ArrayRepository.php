@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 
 use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
+use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 use Rodamoto\Repository\Exception\InvalidCriteriaParametersException;
 
@@ -129,21 +130,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validate(array $data)
     {
-        $validator = \Validator::make($data, $this->rules);
-
-        if ( $validator->fails() )
-        {
-            $this->validationErrors = array(
-                'messages' => $validator->messages(),
-                'failed' => $validator->failed(),
-            );
-
-            return false;
-        }
-
-        $this->validationErrors = array();
-
-        return true;
+        return $this->validateWithCustomRules($data, $this->rules);
     }
 
     /**
@@ -173,7 +160,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateOrFail(array $data)
     {
-
+        if ( ! $this->validate($data) ) {
+            throw new DataNotValidException();
+        }
     }
 
     /**
@@ -181,7 +170,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateWithCustomRulesOrFail(array $data, array $rules)
     {
-
+        if ( ! $this->validateWithCustomRules($data, $rules) ) {
+            throw new DataNotValidException();
+        }
     }
 
     /**

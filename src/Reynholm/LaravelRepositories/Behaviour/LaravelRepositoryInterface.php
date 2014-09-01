@@ -65,6 +65,7 @@ interface LaravelRepositoryInterface
      * getValidationErrors() method
      * @param array $data
      * @throws DataNotValidException
+     * @return void
      */
     public function validateOrFail(array $data);
 
@@ -75,6 +76,7 @@ interface LaravelRepositoryInterface
      * @param array $data
      * @param array $rules
      * @throws DataNotValidException
+     * @return void
      */
     public function validateWithCustomRulesOrFail(array $data, array $rules);
 

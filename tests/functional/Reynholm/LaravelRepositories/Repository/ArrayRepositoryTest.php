@@ -7,6 +7,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Processors\Processor;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar;
 
+use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Repository\ArrayRepository;
 use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
@@ -203,12 +204,31 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testValidateOrFail()
     {
-        $this->markTestIncomplete();
+        $validData   = ['name' => 'carlos', 'age' => 30];
+        $invalidData = ['name' => 'carlos'];
+
+        $this->specify('Should return void|null if data is valid', function() use ($validData) {
+            expect( $this->arrayRepository->validateOrFail($validData) )->equals(null);
+        });
+
+        $this->specify('Should throw exception when data is not valid', function() use ($invalidData) {
+            $this->arrayRepository->validateOrFail($invalidData);
+        }, ['throws' => new DataNotValidException()]);
     }
 
     public function testValidateWithCustomRulesOrFail()
     {
-        $this->markTestIncomplete();
+        $validData   = ['age' => 30];
+        $invalidData = ['name' => 'carlos'];
+        $ageRequired = ['age' => 'required'];
+
+        $this->specify('Should return void|null if data is valid', function() use ($validData, $ageRequired) {
+            expect( $this->arrayRepository->validateWithCustomRulesOrFail($validData, $ageRequired) )->equals(null);
+        });
+
+        $this->specify('Should throw exception when data is not valid', function() use ($invalidData, $ageRequired) {
+            expect( $this->arrayRepository->validateWithCustomRulesOrFail($invalidData, $ageRequired) )->equals(null);
+        }, ['throws' => new DataNotValidException()]);
     }
 
     public function testValidateMany()
