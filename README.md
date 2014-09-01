@@ -28,8 +28,13 @@ Currently available:
 ## Example
 ```php
 class UserArrayRepository extends ArrayRepository {
-	//protected $connection = 'default';
-    protected $tableName  = 'users';
+    //defaults to mysql. You can skip it if your default connection is mysql
+	//protected $connection = 'mysql';
+
+	//If no tableName is specified it will be guessed based on a snake_case version of the CamelCase
+	//class name without the repository part and pluralized.
+	//Examples: UserRepository => users, CustomerHistoryLog => customer_history_logs, etc...
+    //protected $tableName  = 'users';
 }
 ```
 

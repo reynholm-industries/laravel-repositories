@@ -7,6 +7,7 @@ use Illuminate\Database\Query\Builder;
 use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
+use Reynholm\LaravelRepositories\Support\TableNameGuesser;
 
 /**
  * Class ArrayBasedRepository
@@ -22,7 +23,7 @@ use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
  */
 abstract class ArrayRepository implements LaravelRepositoryInterface
 {
-    protected $connection = 'default';
+    protected $connection = 'mysql';
     protected $primaryKey = 'id';
     protected $tableName;
     protected $rules = array();
@@ -32,6 +33,14 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
 
     function __construct()
     {
+        if ($this->tableName === null) {
+
+            /** @var TableNameGuesser $guesser */
+            $guesser = \App::make('Reynholm\LaravelRepositories\Support\TableNameGuesser');
+
+            $this->tableName = $guesser->guess(get_class($this));
+        }
+
         $this->builder = \DB::connection($this->connection)->table($this->tableName);
     }
 
