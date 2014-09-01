@@ -45,6 +45,13 @@ class ArrayRepositoryTest extends BaseTests {
         $this->assertInstanceOf($expectedClass, $this->arrayRepository);
     }
 
+    public function testGetBuilder()
+    {
+        $this->specify('Builder instance is accesible', function() {
+            $this->assertInstanceOf('Illuminate\Database\Query\Builder', $this->arrayRepository->getBuilder());
+        });
+    }
+
     public function testFind()
     {
         $this->specify('Find by id', function() {
@@ -143,6 +150,10 @@ class ArrayRepositoryTest extends BaseTests {
 
         $this->specify('Can order by any field, filtered and limited', function() {
             expect( $this->arrayRepository->findMany([ ['age', '>', 1] ], array('name'), 1, ['name' => 'desc']) )->equals( [['name' => 'silvano']] );
+        });
+
+        $this->specify('If there are no results returns an empty array', function() {
+            expect( $this->arrayRepository->findMany([['name', '=', 'unexistent-name']]) )->equals([]);
         });
     }
 

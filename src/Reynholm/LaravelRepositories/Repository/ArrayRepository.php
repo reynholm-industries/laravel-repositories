@@ -3,7 +3,6 @@
 namespace Reynholm\LaravelRepositories\Repository;
 
 use Illuminate\Database\Query\Builder;
-use Illuminate\Database\QueryException;
 
 use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
