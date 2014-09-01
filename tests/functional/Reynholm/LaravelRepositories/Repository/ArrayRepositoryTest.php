@@ -146,6 +146,62 @@ class ArrayRepositoryTest extends BaseTests {
         });
     }
 
+    public function testCreate()
+    {
+        $validResource   = ['name' => 'hello', 'age' => 25];
+        $invalidResource = ['name' => 'kk', 'age' => 1];
+
+        $this->specify('Resource is created if valid', function() use ($validResource) {
+            $expected = ['id' => 4, 'name' => 'hello', 'age' => 25];
+            expect_that($this->arrayRepository->create($validResource));
+            expect($this->arrayRepository->findOne([['name', '=', 'hello']]))->equals($expected);
+        });
+
+        $this->specify('Resource is not created if not valid', function() use ($invalidResource) {
+            $this->arrayRepository->create($invalidResource);
+        }, ['throws' => new DataNotValidException()]);
+
+        $this->specify('Resource is created if force is specified', function() use ($invalidResource) {
+            expect_that($this->arrayRepository->create($invalidResource, true));
+        });
+    }
+
+    public function testCreateMany()
+    {
+        $validResources   = array(
+            ['name' => 'travis', 'age' => 2],
+            ['name' => 'tester', 'age' => 10],
+            ['name' => 'coverager', 'age' => 3],
+        );
+
+        $invalidResources = array(
+            ['name' => 'travis', 'age' => 2],
+            ['age' => 10],
+            ['name' => 'coverager'],
+        );
+
+        $this->specify('Resources are created if valid', function() use ($validResources) {
+            expect_that($this->arrayRepository->createMany($validResources));
+            expect($this->arrayRepository->count())->equals(6);
+        });
+
+        $this->specify('Resources are not created if not valid', function() use ($invalidResources) {
+            $this->arrayRepository->createMany($invalidResources);
+        }, ['throws' => new DataNotValidException()]);
+    }
+
+    public function testCount()
+    {
+        $this->specify('Can count all rows', function() {
+            expect($this->arrayRepository->count())->equals(3);
+        });
+
+        $this->specify('Can count rows by criteria', function() {
+            $criteria = [['name', '=', 'goce']];
+            expect($this->arrayRepository->count($criteria))->equals(1);
+        });
+    }
+
     public function testDelete()
     {
         $this->specify('Delete one entity', function() {

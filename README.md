@@ -36,6 +36,7 @@ Specify the database table.
 
 Currently implemented methods:
 ```php
+
     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
@@ -63,7 +64,6 @@ Currently implemented methods:
      * @param array $columns Restrict columns that you want to retrieve
      * @return array
      * @throws ColumnNotFoundException
-     * @throws InvalidCriteriaParametersException
      */
     public function findOne(array $criteria, array $columns = array());
 
@@ -88,17 +88,32 @@ Currently implemented methods:
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array());
 
     /**
-     * @param int $id
+     * @param array $data The resource that you want to create
+     * @param bool $force If force is false and data is not valid error will be throwed
      * @return boolean
+     * @throws DataNotValidException
      */
-    public function delete($id);
+    public function create(array $data, $force = false);
 
     /**
-     * @param int $id
-     * @throw EntityNotFoundException
+     * @param array $data The resources that you want to create
+     * @param bool $force If force is false and data is not valid error will be throwed
+     * @return boolean
+     * @throws DataNotValidException
      */
-    public function deleteOrFail($id);
-    
+    public function createMany(array $data, $force = false);
+
+    /**
+     * @param array $criteria
+     * Ex.:
+     * array(
+     *     array('name', '=', 'carlos'),
+     *     array('age',  '>', 20),
+     * )
+     * @return int
+     */
+    public function count(array $criteria = array());
+
     /**
      * Validates the input array and stores all the errors,
      * them, you can get them with the getErrors() method
@@ -183,6 +198,18 @@ Currently implemented methods:
      * @return array
      */
     public function getValidationErrors();
+
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function delete($id);
+
+    /**
+     * @param int $id
+     * @throw EntityNotFoundException
+     */
+    public function deleteOrFail($id);
 ```
 
 ## Validation

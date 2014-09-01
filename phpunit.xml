@@ -16,13 +16,13 @@
         </testsuite>
     </testsuites>
 
-    <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
+    <!--<logging>-->
+        <!--<log type="coverage-clover" target="build/logs/clover.xml"/>-->
+    <!--</logging>-->
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src/</directory>
-        </whitelist>
-    </filter>
+    <!--<filter>-->
+        <!--<whitelist processUncoveredFilesFromWhitelist="true">-->
+            <!--<directory suffix=".php">src/</directory>-->
+        <!--</whitelist>-->
+    <!--</filter>-->
 </phpunit>

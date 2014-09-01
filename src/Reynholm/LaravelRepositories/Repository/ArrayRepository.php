@@ -151,6 +151,50 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     /**
      * {@inheritdoc}
      */
+    public function create(array $data, $force = false)
+    {
+        if ($force === false) {
+            $this->validateOrFail($data);
+        }
+
+        return $this->builder->insert($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createMany(array $data, $force = false)
+    {
+        if ($force === false) {
+            $this->validateManyOrFail($data);
+        }
+
+        return $this->builder->insert($data);
+    }
+
+    /**
+     * @param array $criteria
+     * Ex.:
+     * array(
+     *     array('name', '=', 'carlos'),
+     *     array('age',  '>', 20),
+     * )
+     * @return int
+     */
+    public function count(array $criteria = array())
+    {
+        $builder = $this->builder;
+
+        foreach ($criteria as $search) {
+            $builder = $builder->where($search[0], $search[1], $search[2]);
+        }
+
+        return $this->builder->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($id)
     {
         return $this->builder->where($this->primaryKey, '=', $id)->delete();
