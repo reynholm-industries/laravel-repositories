@@ -24,7 +24,7 @@
         "codeception/specify": "dev-master",
         "codeception/verify": "dev-master",
         "orchestra/testbench": "2.2.1",
-        "codeclimate/php-test-reporter": "dev-master"
+        "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-0": {
