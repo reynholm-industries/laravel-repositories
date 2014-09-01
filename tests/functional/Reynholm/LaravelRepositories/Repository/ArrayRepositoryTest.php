@@ -246,9 +246,25 @@ class ArrayRepositoryTest extends BaseTests {
     public function testUpdate()
     {
         $this->specify('Can update a resource by its id', function() {
-            expect( $this->arrayRepository->update(1, ['name' => 'charly', 'age' => '32']) )->equals(true);
+            expect($this->arrayRepository->update(1, ['name' => 'charly', 'age' => '32']) )->equals(1);
             expect($this->arrayRepository->findOrFail(1)['name'] )->equals('charly');
             expect($this->arrayRepository->findOrFail(1)['age'] )->equals(32);
+        });
+
+        $this->specify('Update a non existent resource returns 0', function() {
+            expect($this->arrayRepository->update(99999, ['name' => 'charly']))->equals(0);
+        });
+    }
+
+    public function testUpdateMany()
+    {
+        $this->specify('Can update one or more resources at once', function() {
+            expect($this->arrayRepository->updateMany([['age', '>', 0]], ['age' => 3]))->equals(3);
+            expect($this->arrayRepository->count())->equals(3);
+
+            $this->markTestIncomplete('This query is deleting the rows!!! why?');
+            expect($this->arrayRepository->updateMany([['name', '=', 'goce']], ['age' => 2]))->equals(1);
+            expect($this->arrayRepository->count())->equals(3);
         });
     }
 

@@ -138,6 +138,14 @@ Currently implemented methods:
      */
     public function update($id, array $data);
 
+    /**
+     * Update one or more resources
+     * @param array $criteria
+     * @param array $data
+     * @return int Number of affected rows
+     */
+    public function updateMany(array $criteria, array $data);
+
      /**
       * Validates the input array and stores all the errors,
       * them, you can get them with the getErrors() method

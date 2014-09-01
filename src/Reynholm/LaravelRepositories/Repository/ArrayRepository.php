@@ -71,7 +71,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function findOne(array $criteria, array $columns = array())
     {
-        $builder = $this->builder;
+        $builder = $this->getBuilder();
 
         if ( ! empty($columns) ) {
             $builder = $builder->select($columns);
@@ -95,7 +95,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array())
     {
-        $builder = $this->builder;
+        $builder = $this->getBuilder();
 
         if ( ! empty($columns) ) {
             $builder = $builder->select($columns);
@@ -137,7 +137,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function lists($column, $key = null)
     {
-        return $this->builder->lists($column, $key);
+        return $this->getBuilder()->lists($column, $key);
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $this->validateOrFail($data);
         }
 
-        return $this->builder->insert($data);
+        return $this->getBuilder()->insert($data);
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $this->validateManyOrFail($data);
         }
 
-        return $this->builder->insert($data);
+        return $this->getBuilder()->insert($data);
     }
 
     /**
@@ -192,6 +192,19 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         return $this->getBuilder()->where($this->primaryKey, '=', $id)->update($data);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function updateMany(array $criteria, array $data)
+    {
+        $builder = $this->getBuilder();
+
+        foreach ($criteria as $search) {
+            $builder = $builder->where($search[0], $search[1], $search[2]);
+        }
+
+        return $builder->update($data);
+    }
 
     /**
      * {@inheritdoc}

@@ -92,9 +92,17 @@ interface LaravelRepositoryInterface
      * Update a resource by its id
      * @param int $id
      * @param array $data
-     * @return boolean
+     * @return int Number of affected rows
      */
     public function update($id, array $data);
+
+    /**
+     * Update one or more resources
+     * @param array $criteria
+     * @param array $data
+     * @return int Number of affected rows
+     */
+    public function updateMany(array $criteria, array $data);
 
     /**
      * @param array $criteria
