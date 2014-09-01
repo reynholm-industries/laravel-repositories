@@ -91,14 +91,6 @@ Currently implemented methods:
      public function findAll(array $columns = array(), $limit = 0, array $orderBy = array());
 
      /**
-      * @param array $data The resource that you want to create
-      * @param bool $force If force is false and data is not valid error will be throwed
-      * @return boolean
-      * @throws DataNotValidException
-      */
-     public function create(array $data, $force = false);
-
-     /**
       * Get an array with the values of a given column.
       *
       * @param  string  $column
@@ -106,6 +98,14 @@ Currently implemented methods:
       * @return array
       */
      public function lists($column, $key = null);
+
+     /**
+      * @param array $data The resource that you want to create
+      * @param bool $force If force is false and data is not valid error will be throwed
+      * @return boolean
+      * @throws DataNotValidException
+      */
+     public function create(array $data, $force = false);
 
      /**
       * @param array $data The resources that you want to create
