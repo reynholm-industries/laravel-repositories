@@ -116,15 +116,17 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $builder = $builder->select($columns);
         }
 
-        $builder = $builder->limit($limit);
+        if ($limit > 0) {
+            $builder = $builder->limit($limit);
+        }
 
         foreach ($criteria as $search) {
             $builder = $builder->where($search[0], $search[1], $search[2]);
         }
 
         if ( ! empty($orderBy) ) {
-            foreach ($orderBy as $orderField) {
-                $builder->orderBy($orderField[0], $orderField[1]);
+            foreach ($orderBy as $orderName => $orderDirection) {
+                $builder->orderBy($orderName, $orderDirection);
             }
         }
 
@@ -144,6 +146,14 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         }
 
         return $this->objectsToArray($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAll(array $columns = array(), $limit = 0, array $orderBy = array())
+    {
+        return $this->findMany([], $columns, $limit, $orderBy);
     }
 
     /**
@@ -187,7 +197,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $builder = $builder->where($search[0], $search[1], $search[2]);
         }
 
-        return $this->builder->count();
+        return $builder->count();
     }
 
     /**

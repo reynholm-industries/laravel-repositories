@@ -36,7 +36,7 @@ Specify the database table.
 Currently implemented methods:
 ```php
 
-    /**
+     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
      * @return array
@@ -85,6 +85,15 @@ Currently implemented methods:
      * @throws ColumnNotFoundException
      */
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array());
+
+    /**
+     * @param array $columns Restrict columns that you want to retrieve
+     * @param int $limit
+     * @param array $orderBy
+     * Ex.: ['name' => 'asc', 'age' => 'desc']
+     * @return array
+     */
+    public function findAll(array $columns = array(), $limit = 0, array $orderBy = array());
 
     /**
      * @param array $data The resource that you want to create
@@ -209,6 +218,7 @@ Currently implemented methods:
      * @throw EntityNotFoundException
      */
     public function deleteOrFail($id);
+
 ```
 
 ## Validation

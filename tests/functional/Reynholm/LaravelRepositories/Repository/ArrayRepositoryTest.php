@@ -142,7 +142,28 @@ class ArrayRepositoryTest extends BaseTests {
         });
 
         $this->specify('Can order by any field, filtered and limited', function() {
-            expect( $this->arrayRepository->findMany([ ['age', '>', 1] ], array('name'), 1, [['name', 'desc']]) )->equals( [['name' => 'silvano']] );
+            expect( $this->arrayRepository->findMany([ ['age', '>', 1] ], array('name'), 1, ['name' => 'desc']) )->equals( [['name' => 'silvano']] );
+        });
+    }
+
+    public function testFindAll()
+    {
+        $this->specify('Can return all of the data of a table', function () {
+            expect($this->arrayRepository->findAll())->equals($this->userFixtures->getFixtures());
+        });
+
+        $this->specify('Can return all of the data with custom columns', function() {
+            $expected = array(['name' => 'goce'], ['name' => 'morales'], ['name' => 'silvano']);
+
+            expect($this->arrayRepository->findAll(['name']))->equals($expected);
+        });
+
+        $this->specify('Can return all of the data limited', function() {
+            $expected1 = [$this->userFixtures->getFixtureId(1)];
+            $expected2 = [$this->userFixtures->getFixtureId(1), $this->userFixtures->getFixtureId(2)];
+
+            expect($this->arrayRepository->findAll(['id', 'name', 'age'], 1))->equals($expected1);
+            expect($this->arrayRepository->findAll(['id', 'name', 'age'], 2))->equals($expected2);
         });
     }
 
