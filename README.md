@@ -2,6 +2,7 @@ Laravel Repositories
 ====================
 
 [![Build Status](https://travis-ci.org/reynholm-industries/laravel-repositories.svg)](https://travis-ci.org/reynholm-industries/laravel-repositories)
+[![Coverage Status](https://coveralls.io/repos/reynholm-industries/laravel-repositories/badge.png?branch=master)](https://coveralls.io/r/reynholm-industries/laravel-repositories?branch=master)
 
 Repository pattern for Laravel
 
