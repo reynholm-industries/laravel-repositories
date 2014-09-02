@@ -41,10 +41,6 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $this->tableName = $guesser->guess(get_class($this));
         }
 
-        if ($this->tableName === null) {
-            $this->connection = \Config::get('database.default');
-        }
-
         $this->builder = \DB::connection($this->connection)->table($this->tableName);
     }
 
