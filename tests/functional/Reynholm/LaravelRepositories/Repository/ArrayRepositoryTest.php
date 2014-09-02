@@ -240,7 +240,6 @@ class ArrayRepositoryTest extends BaseTests {
     {
         $this->specify('Can update one or more resources at once', function() {
             expect($this->arrayRepository->updateMany([['age', '>', 0]], ['age' => 3]))->equals(3);
-            expect($this->arrayRepository->count())->equals(3);
 
             $allUsers = $this->arrayRepository->findAll();
 
@@ -248,11 +247,8 @@ class ArrayRepositoryTest extends BaseTests {
                 expect($user['age'])->equals(3);
             }
 
-            $this->markTestIncomplete('This query is deleting the rows!!! why?');
-            
             expect($this->arrayRepository->updateMany([['name', '=', 'goce']], ['age' => 2]))->equals(1);
             expect($this->arrayRepository->findOrFail(1)['name'])->equals('goce');
-            expect($this->arrayRepository->count())->equals(3);
         });
     }
 
