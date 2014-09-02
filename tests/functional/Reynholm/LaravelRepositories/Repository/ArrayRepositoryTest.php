@@ -2,19 +2,13 @@
 
 namespace tests\functional\Reynholm\LaravelRepositories\Repository;
 
-use Illuminate\Database\Connection;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\Processors\Processor;
-use Illuminate\Database\Schema\Grammars\MySqlGrammar;
-
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Repository\ArrayRepository;
-use Reynholm\LaravelRepositories\Exception\ColumnNotFoundException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 
 use tests\BaseTests;
 use tests\fixtures\UserFixtures;
-use tests\repository\UserArrayRepository;
+use tests\repository\UserRepository;
 
 /**
  * Class ArrayRepositoryTest
@@ -34,7 +28,7 @@ class ArrayRepositoryTest extends BaseTests {
         parent::setUp();
 
         $this->prepareDatabase();
-        $this->arrayRepository = new UserArrayRepository();
+        $this->arrayRepository = new UserRepository();
         $this->userFixtures = new UserFixtures();
     }
 
@@ -43,13 +37,6 @@ class ArrayRepositoryTest extends BaseTests {
         $expectedClass = 'Reynholm\LaravelRepositories\Repository\ArrayRepository';
 
         $this->assertInstanceOf($expectedClass, $this->arrayRepository);
-    }
-
-    public function testGetBuilder()
-    {
-        $this->specify('Builder instance is accesible', function() {
-            $this->assertInstanceOf('Illuminate\Database\Query\Builder', $this->arrayRepository->getBuilder());
-        });
     }
 
     public function testFind()
@@ -76,13 +63,6 @@ class ArrayRepositoryTest extends BaseTests {
             expect( $this->arrayRepository->find(999999) )->equals([]);
             expect( $this->arrayRepository->find(999999, array('name')) )->equals([]);
         });
-
-         /** 
-         * @todo Seems to don't work with in memory sqlite database. look for a workaround
-         */
-        /*$this->specify('Search with a unexistent column throws exception', function() {            
-            $this->arrayRepository->find(1, array('this_does_not_exists'));
-        }, ['throws' => new ColumnNotFoundException() ] );*/
     }
 
     public function testFindOrFail()

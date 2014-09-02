@@ -17,24 +17,28 @@ Interfaces may change.
 to do: how to install with composer
 
 # Usage
-Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations
-and provide connection and table name.
+Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations.
 
 Currently available:
+
 · Reynholm\LaravelRepositories\Repository\ArrayRepository
-  Allows you to query and retrieve data only with arrays so there is no
-  tight coupling with laravel or eloquent
+
+Lightway implementation that allows you retrieve data as arrays so there is no
+tight coupling with laravel or eloquent
 
 ## Example
 ```php
-class UserArrayRepository extends ArrayRepository {
-	//protected $connection = 'default';
-    protected $tableName  = 'users';
+class UserArrayRepository extends ArrayRepository
+{
+    //defaults to laravel's default connection
+	//protected $connection = 'mysql';
+
+	//If no tableName is specified it will be guessed based on a snake_case version of the CamelCase
+	//class name without the repository part and pluralized.
+	//Examples: UserRepository => users, CustomerHistoryLog => customer_history_logs, etc...
+    //protected $tableName  = 'users';
 }
 ```
-
-Specify a connection string if is not the laravel's default connection.
-Specify the database table.
 
 Currently implemented methods:
 ```php
@@ -283,14 +287,47 @@ to create your custom repository methods.
 
 ### Example
 ```php
-class MyUsersRepository extends ArrayRepository
+class MyUserRepository extends ArrayRepository
 {
     public function getActiveUsers()
     {
-        return (array)$this->getBuilder()->whereActive(true)->get();
+        $result = $this->getBuilder()->whereActive(true)->get();
+
+        //Builder returns an objects array so you can use the following method
+        //to convert an array of objets to array
+        return $this->objectsToArray($result);
     }
 }
 ```
+
+A best practice would be to create a new interface for MyUsersRepository with
+all of the new methods that you are going to add.
+```php
+interface MyUserRepositoryInterface
+{
+    /**
+    * @return array
+    */
+    public function getActiveUsers();
+}
+```
+And then implement it on your repository:
+```php
+class MyUserRepository extends ArrayRepository implements MyUserRepositoryInterface
+{
+    /**
+    * {@inheritdoc}
+    */
+    public function getActiveUsers()
+    {
+        $result = $this->getBuilder()->whereActive(true)->get();
+        return $this->objectsToArray($result);
+    }
+}
+```
+
+So if you want to change the implementation you would need to implement the MyUsersRepositoryInterface
+ and LaravelRepositoryInterface.
 
 # Future
 More features coming soon like Spring-Like annotations for cache and transactions,

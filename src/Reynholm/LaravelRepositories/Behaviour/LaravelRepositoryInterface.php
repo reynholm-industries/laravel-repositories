@@ -7,7 +7,6 @@ use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 
 interface LaravelRepositoryInterface
 {
-
     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve
