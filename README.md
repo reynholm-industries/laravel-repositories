@@ -17,18 +17,20 @@ Interfaces may change.
 to do: how to install with composer
 
 # Usage
-Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations
-and provide connection and table name.
+Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations.
 
 Currently available:
+
 · Reynholm\LaravelRepositories\Repository\ArrayRepository
-  Allows you to query and retrieve data only with arrays so there is no
-  tight coupling with laravel or eloquent
+
+Lightway implementation that allows you retrieve data as arrays so there is no
+tight coupling with laravel or eloquent
 
 ## Example
 ```php
-class UserArrayRepository extends ArrayRepository {
-    //defaults to mysql. You can skip it if your default connection is mysql
+class UserArrayRepository extends ArrayRepository
+{
+    //defaults to laravel's default connection
 	//protected $connection = 'mysql';
 
 	//If no tableName is specified it will be guessed based on a snake_case version of the CamelCase
@@ -277,7 +279,7 @@ to create your custom repository methods.
 
 ### Example
 ```php
-class MyUsersRepository extends ArrayRepository
+class MyUserRepository extends ArrayRepository
 {
     public function getActiveUsers()
     {
@@ -293,7 +295,7 @@ class MyUsersRepository extends ArrayRepository
 A best practice would be to create a new interface for MyUsersRepository with
 all of the new methods that you are going to add.
 ```php
-interface MyUsersRepositoryInterface
+interface MyUserRepositoryInterface
 {
     /**
     * @return array
@@ -303,7 +305,7 @@ interface MyUsersRepositoryInterface
 ```
 And then implement it on your repository:
 ```php
-class MyUsersRepository extends ArrayRepository implements MyUsersRepositoryInterface
+class MyUserRepository extends ArrayRepository implements MyUserRepositoryInterface
 {
     /**
     * {@inheritdoc}
@@ -311,9 +313,6 @@ class MyUsersRepository extends ArrayRepository implements MyUsersRepositoryInte
     public function getActiveUsers()
     {
         $result = $this->getBuilder()->whereActive(true)->get();
-
-        //Builder returns an objects array so you can use the following method
-        //to convert an array of objets to array
         return $this->objectsToArray($result);
     }
 }
