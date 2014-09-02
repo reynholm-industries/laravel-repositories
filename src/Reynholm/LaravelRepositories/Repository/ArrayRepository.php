@@ -44,11 +44,12 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         $this->builder = \DB::connection($this->connection)->table($this->tableName);
     }
 
-    /**     
+    /**
+     * Returns a new Builder instance
      * @return Builder
      */
     protected function getBuilder() {
-        return $this->builder;
+        return $this->builder->newQuery()->getConnection()->table($this->tableName);
     }    
 
     /**
@@ -80,7 +81,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function findOne(array $criteria, array $columns = array())
     {
-        $builder = $this->builder;
+        $builder = $this->getBuilder();
 
         if ( ! empty($columns) ) {
             $builder = $builder->select($columns);
@@ -104,7 +105,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array())
     {
-        $builder = $this->builder;
+        $builder = $this->getBuilder();
 
         if ( ! empty($columns) ) {
             $builder = $builder->select($columns);
@@ -146,7 +147,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function lists($column, $key = null)
     {
-        return $this->builder->lists($column, $key);
+        return $this->getBuilder()->lists($column, $key);
     }
 
     /**
@@ -158,7 +159,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $this->validateOrFail($data);
         }
 
-        return $this->builder->insert($data);
+        return $this->getBuilder()->insert($data);
     }
 
     /**
@@ -170,7 +171,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             $this->validateManyOrFail($data);
         }
 
-        return $this->builder->insert($data);
+        return $this->getBuilder()->insert($data);
     }
 
     /**
