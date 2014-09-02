@@ -51,7 +51,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     /**     
      * @return Builder
      */
-    public function getBuilder() {
+    protected function getBuilder() {
         return $this->builder;
     }    
 

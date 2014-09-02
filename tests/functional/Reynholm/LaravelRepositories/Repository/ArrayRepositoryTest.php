@@ -39,13 +39,6 @@ class ArrayRepositoryTest extends BaseTests {
         $this->assertInstanceOf($expectedClass, $this->arrayRepository);
     }
 
-    public function testGetBuilder()
-    {
-        $this->specify('Builder instance is accesible', function() {
-            $this->assertInstanceOf('Illuminate\Database\Query\Builder', $this->arrayRepository->getBuilder());
-        });
-    }
-
     public function testFind()
     {
         $this->specify('Find by id', function() {
