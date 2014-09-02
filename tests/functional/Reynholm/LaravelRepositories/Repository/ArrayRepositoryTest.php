@@ -274,6 +274,16 @@ class ArrayRepositoryTest extends BaseTests {
         }, ['throws' => new EntityNotFoundException()]);
     }
 
+    public function testDeleteAll()
+    {
+        $this->specify('Delete all the data of the table', function() {
+            expect($this->arrayRepository->count())->equals(3);
+            expect( $this->arrayRepository->deleteAll() )->equals(3);
+            expect($this->arrayRepository->count())->equals(0);
+            expect( $this->arrayRepository->deleteAll() )->equals(0);
+        });
+    }
+
     public function testValidate()
     {
         $validData = array('name' => 'carlos', 'age' => 32);

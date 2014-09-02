@@ -235,6 +235,15 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     }
 
     /**
+     * Delete all the rows
+     * @return boolean
+     */
+    public function deleteAll()
+    {
+        return $this->getBuilder()->delete();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function validate(array $data)

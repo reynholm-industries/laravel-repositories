@@ -210,4 +210,10 @@ interface LaravelRepositoryInterface
      * @throw EntityNotFoundException
      */
     public function deleteOrFail($id);
+
+    /**
+     * Delete all the rows
+     * @return int Number of deleted rows
+     */
+    public function deleteAll();
 } 
