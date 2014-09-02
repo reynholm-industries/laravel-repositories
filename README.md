@@ -281,10 +281,46 @@ class MyUsersRepository extends ArrayRepository
 {
     public function getActiveUsers()
     {
-        return (array)$this->getBuilder()->whereActive(true)->get();
+        $result = $this->getBuilder()->whereActive(true)->get();
+
+        //Builder returns an objects array so you can use the following method
+        //to convert an array of objets to array
+        return $this->objectsToArray($result);
     }
 }
 ```
+
+A best practice would be to create a new interface for MyUsersRepository with
+all of the new methods that you are going to add.
+```php
+interface MyUsersRepositoryInterface
+{
+    /**
+    * @return array
+    */
+    public function getActiveUsers();
+}
+```
+And then implement it on your repository:
+```php
+class MyUsersRepository extends ArrayRepository implements MyUsersRepositoryInterface
+{
+    /**
+    * {@inheritdoc}
+    */
+    public function getActiveUsers()
+    {
+        $result = $this->getBuilder()->whereActive(true)->get();
+
+        //Builder returns an objects array so you can use the following method
+        //to convert an array of objets to array
+        return $this->objectsToArray($result);
+    }
+}
+```
+
+So if you want to change the implementation you would need to implement the MyUsersRepositoryInterface
+ and LaravelRepositoryInterface.
 
 # Future
 More features coming soon like Spring-Like annotations for cache and transactions,
