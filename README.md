@@ -265,11 +265,12 @@ class DownloadRepository extends ArrayRepository
 ```
 
 By default it will manage created_at and updated_at fields.
-You can override the created and updated fields using the folling properties:
+You can override the created and updated fields using the following properties:
+
 ```php
 protected $stamp_create = 'created_at';
 protected $stamp_update = 'updated_at';
-' ' '
+```
 
 ## Validation
 You can validate your data with the validate methods.
