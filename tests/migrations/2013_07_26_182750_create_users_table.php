@@ -18,6 +18,14 @@ class CreateUsersTable extends Migration
             $table->integer('age');
         });
 
+        Schema::create('downloads', function ($table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+
         $this->seed();
     }
 
@@ -26,6 +34,13 @@ class CreateUsersTable extends Migration
         $userFixtures = new \tests\fixtures\UserFixtures();
 
         DB::table('users')->insert($userFixtures->getFixtures());
+        DB::table('downloads')->insert(
+            array(
+                ['user_id' => 1, 'created_at' => '2014-09-03 08:09:47', 'updated_at' => '2014-09-03 08:09:47'],
+                ['user_id' => 2, 'created_at' => '2014-09-03 08:09:47', 'updated_at' => '2014-09-03 08:09:47'],
+                ['user_id' => 3, 'created_at' => '2014-09-03 08:09:47', 'updated_at' => '2014-09-03 08:09:47'],
+            )
+        );
     }
 
     /**
@@ -35,6 +50,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::drop('downloads');
         Schema::drop('users');
     }
 }

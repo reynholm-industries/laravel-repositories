@@ -8,6 +8,7 @@ use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 use Reynholm\LaravelRepositories\Support\TableNameGuesser;
+use Reynholm\LaravelRepositories\Support\Timestamper;
 
 /**
  * Class ArrayBasedRepository
@@ -20,6 +21,7 @@ use Reynholm\LaravelRepositories\Support\TableNameGuesser;
  * @property string  $tableName
  * @property array   $validationErrors If validation fails errors will be stored here.
  *                   Is an array with 2 keys, messages (fields that failed with message), and failed (fails without message)
+ * @property Timestamper $timestamper
  */
 abstract class ArrayRepository implements LaravelRepositoryInterface
 {
@@ -28,20 +30,22 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     protected $tableName;
     protected $rules = array();
 
+    protected $timestamps   = false;
+    protected $stamp_create = 'created_at';
+    protected $stamp_update = 'updated_at';
+
     private $validationErrors = array();
     private $builder;
+    private $timestamper;
 
-    function __construct()
+    function __construct(TableNameGuesser $tableNameGuesser, Timestamper $timestamper)
     {
         if ($this->tableName === null) {
-
-            /** @var TableNameGuesser $guesser */
-            $guesser = \App::make('Reynholm\LaravelRepositories\Support\TableNameGuesser');
-
-            $this->tableName = $guesser->guess(get_class($this));
+            $this->tableName = $tableNameGuesser->guess(get_class($this));
         }
 
         $this->builder = \DB::connection($this->connection)->table($this->tableName);
+        $this->timestamper = $timestamper;
     }
 
     /**
@@ -155,6 +159,11 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function create(array $data, $force = false)
     {
+        if ($this->timestamps === true) {
+            $stampFields = [$this->stamp_create, $this->stamp_update];
+            $data = $this->timestamper->stamp($data, $stampFields);
+        }
+
         if ($force === false) {
             $this->validateOrFail($data);
         }
@@ -167,6 +176,11 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function createMany(array $data, $force = false)
     {
+        if ($this->timestamps === true) {
+            $stampFields = [$this->stamp_create, $this->stamp_update];
+            $data = $this->timestamper->stampCollection($data, $stampFields);
+        }
+
         if ($force === false) {
             $this->validateManyOrFail($data);
         }
@@ -199,6 +213,11 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function update($id, array $data)
     {
+        if ($this->timestamps === true) {
+            $stampFields = [$this->stamp_update];
+            $data = $this->timestamper->stamp($data, $stampFields);
+        }
+
         return $this->getBuilder()->where($this->primaryKey, '=', $id)->update($data);
     }
 
@@ -208,6 +227,11 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     public function updateMany(array $criteria, array $data)
     {
         $builder = $this->getBuilder();
+
+        if ($this->timestamps === true) {
+            $stampFields = [$this->stamp_update];
+            $data = $this->timestamper->stampCollection($data, $stampFields);
+        }
 
         foreach ($criteria as $search) {
             $builder = $builder->where($search[0], $search[1], $search[2]);

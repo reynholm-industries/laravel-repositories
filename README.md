@@ -255,6 +255,22 @@ Currently implemented methods:
 
 ```
 
+## Timestamps
+You can add timestamps adding the $timestamps = true property:
+```php
+class DownloadRepository extends ArrayRepository
+{
+    protected $timestamps = true;
+}
+```
+
+By default it will manage created_at and updated_at fields.
+You can override the created and updated fields using the folling properties:
+```php
+protected $stamp_create = 'created_at';
+protected $stamp_update = 'updated_at';
+' ' '
+
 ## Validation
 You can validate your data with the validate methods.
 Specify the rules of your repository in the rules property:

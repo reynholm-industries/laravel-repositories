@@ -28,7 +28,7 @@ class ArrayRepositoryTest extends BaseTests {
         parent::setUp();
 
         $this->prepareDatabase();
-        $this->arrayRepository = new UserRepository();
+        $this->arrayRepository = \App::make('tests\repository\UserRepository');
         $this->userFixtures = new UserFixtures();
     }
 

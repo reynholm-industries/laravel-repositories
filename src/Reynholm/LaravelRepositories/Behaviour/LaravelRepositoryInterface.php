@@ -44,11 +44,7 @@ interface LaravelRepositoryInterface
      * @param array $columns Restrict columns that you want to retrieve
      * @param integer $limit
      * @param array $orderBy
-     * Ex.:
-     * array(
-     *     array('name', 'asc'),
-     *     array('age', 'desc'),
-     * )
+     * Ex.: ['name' => 'asc', 'age' => 'desc']
      * @return array
      */
     public function findMany(array $criteria, array $columns = array(), $limit = 0, array $orderBy = array());
