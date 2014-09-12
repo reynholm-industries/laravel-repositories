@@ -204,12 +204,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function update($id, array $data)
     {
-        if ($this->timestamps === true) {
-            $stampFields = [$this->stamp_update];
-            $data = $this->timestamper->stamp($data, $stampFields);
-        }
-
-        return $this->getBuilder()->where($this->primaryKey, '=', $id)->update($data);
+        return $this->updateMany([[$this->primaryKey, '=', $id]], $data);
     }
 
     /**
@@ -219,9 +214,8 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     {
         $builder = $this->getBuilder();
 
-        if ($this->timestamps === true) {
-            $stampFields = [$this->stamp_update];
-            $data = $this->timestamper->stampCollection($data, $stampFields);
+        if ($this->timestamps === true) {                        
+            $data = $this->timestamper->stamp($data, [$this->stamp_update]);
         }
 
         foreach ($criteria as $search) {
