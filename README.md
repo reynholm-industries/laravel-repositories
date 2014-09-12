@@ -311,8 +311,8 @@ else {
     //The data is not valid
     //You can get the validation failed or messages this way:
     $errors = $this->arrayRepository->getValidationErrors()
-    //$errors['messages'] Contains the LaravelViewBag with the description of the errors
-    //$errors['failed'] Contains the failed validation rules without messages
+    //$errors['messages'] Contains an array with the validation messages
+    //$errors['failed'] Contains an array with the failed rules
 }
 ```
 
