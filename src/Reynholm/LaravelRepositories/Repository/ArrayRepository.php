@@ -379,6 +379,42 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getValidationMessages()
+    {
+        if (empty($this->validationErrors)) {
+            return [];
+        }
+
+        $isMultidimensional = ! empty($this->validationErrors[0]);
+
+        if ($isMultidimensional) {
+            return array_pluck($this->validationErrors, 'messages');
+        }        
+
+        return $this->validationErrors['messages'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValidationFailures()
+    {                
+        if (empty($this->validationErrors)) {
+            return [];
+        }
+
+        $isMultidimensional = ! empty($this->validationErrors[0]);
+
+        if ($isMultidimensional) {
+            return array_pluck($this->validationErrors, 'failed');
+        }        
+
+        return $this->validationErrors['failed'];
+    }
+
+    /**
      * Used to convert the stdClass array coming from the laravel query builder
      * to an array
      * @param array $data

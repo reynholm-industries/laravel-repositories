@@ -311,6 +311,8 @@ class ArrayRepositoryTest extends BaseTests {
             $errors = $this->arrayRepository->getValidationErrors();            
             expect( count($errors['messages']) )->equals(2);
             expect( count($errors['failed']) )->equals(2);
+            expect(count($this->arrayRepository->getValidationMessages()))->equals(2);
+            expect(count($this->arrayRepository->getValidationFailures()))->equals(2);
         });
     }
 
@@ -406,6 +408,8 @@ class ArrayRepositoryTest extends BaseTests {
                 //carlos failures
                 expect(count($this->arrayRepository->getValidationErrors()[0]['messages']))->equals(1);
                 expect(count($this->arrayRepository->getValidationErrors()[0]['failed']))->equals(1);
+                expect(count($this->arrayRepository->getValidationMessages()))->equals(2);
+                expect(count($this->arrayRepository->getValidationFailures()))->equals(2);                
 
                 //no name failures
                 expect(count($this->arrayRepository->getValidationErrors()[1]['messages']))->equals(1);
