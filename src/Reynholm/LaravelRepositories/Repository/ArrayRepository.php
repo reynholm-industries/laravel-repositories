@@ -159,16 +159,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function create(array $data, $force = false)
     {
-        if ($this->timestamps === true) {
-            $stampFields = [$this->stamp_create, $this->stamp_update];
-            $data = $this->timestamper->stamp($data, $stampFields);
-        }
-
-        if ($force === false) {
-            $this->validateOrFail($data);
-        }
-
-        return $this->getBuilder()->insert($data);
+        return $this->createMany([$data], $force);
     }
 
     /**
