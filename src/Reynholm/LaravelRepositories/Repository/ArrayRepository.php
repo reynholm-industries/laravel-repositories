@@ -272,7 +272,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validate(array $data)
     {
-        return $this->validateWithCustomRules($data, $this->rules);
+        return $this->validateWithCustomRules($data, $this->rules);            
     }
 
     /**
@@ -283,9 +283,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
         $validator = \Validator::make($data, $rules);
 
         if ( $validator->fails() )
-        {
+        {            
             $this->validationErrors = array(
-                'messages' => $validator->messages(),
+                'messages' => $validator->messages()->getMessages(),
                 'failed' => $validator->failed(),
             );
 
@@ -330,7 +330,6 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function validateManyWithCustomRules(array $data, array $rules)
     {
-        $dataIsValid = true;
         $this->validationErrors = array();
 
         foreach ($data as $row) {
@@ -340,7 +339,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             if ( $validator->fails() )
             {
                 $this->validationErrors[] = array(
-                    'messages' => $validator->messages(),
+                    'messages' => $validator->messages()->getMessages(),
                     'failed'   => $validator->failed(),
                 );
 
@@ -348,7 +347,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             }
         }
 
-        return $dataIsValid;
+        return !(bool)count($this->validationErrors);
     }
 
     /**

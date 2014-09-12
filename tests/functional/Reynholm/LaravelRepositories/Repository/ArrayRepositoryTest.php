@@ -307,7 +307,10 @@ class ArrayRepositoryTest extends BaseTests {
             expect( $this->arrayRepository->getValidationErrors() )->equals( array() );
 
             expect_not( $this->arrayRepository->validate($invalidData) );
-            expect( count($this->arrayRepository->getValidationErrors()['failed'] ) )->equals(2);
+
+            $errors = $this->arrayRepository->getValidationErrors();            
+            expect( count($errors['messages']) )->equals(2);
+            expect( count($errors['failed']) )->equals(2);
         });
     }
 
@@ -399,6 +402,14 @@ class ArrayRepositoryTest extends BaseTests {
             function() use ($invalidData) {
                 expect_not($this->arrayRepository->validateMany($invalidData));
                 expect(count($this->arrayRepository->getValidationErrors()))->equals(2);
+
+                //carlos failures
+                expect(count($this->arrayRepository->getValidationErrors()[0]['messages']))->equals(1);
+                expect(count($this->arrayRepository->getValidationErrors()[0]['failed']))->equals(1);
+
+                //no name failures
+                expect(count($this->arrayRepository->getValidationErrors()[1]['messages']))->equals(1);
+                expect(count($this->arrayRepository->getValidationErrors()[1]['failed']))->equals(1);
             });
     }
 
