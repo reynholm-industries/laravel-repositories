@@ -291,6 +291,8 @@ class ArrayRepositoryTest extends BaseTests {
 
         $this->specify('Returns empty array if no validations where performed', function() {
            expect( $this->arrayRepository->getValidationErrors() )->equals( array() );
+           expect( $this->arrayRepository->getValidationMessages() )->equals( array() );
+           expect( $this->arrayRepository->getValidationFailures() )->equals( array() );
         });
 
         $this->specify('Returns true when data is valid', function() use ($validData) {
@@ -395,15 +397,21 @@ class ArrayRepositoryTest extends BaseTests {
             ['age' => 70],
         );
 
+        $this->specify('Empty arrays are returned when there are no errors', function()  {
+            expect($this->arrayRepository->getValidationErrors())->equals([]);
+            expect($this->arrayRepository->getValidationMessages())->equals([]);
+            expect($this->arrayRepository->getValidationFailures())->equals([]);
+        });
+
         $this->specify('Returns true when data is valid and there are no errors',
             function() use ($validData)  {
                 expect_that($this->arrayRepository->validateMany($validData));
-            });
+        });
 
         $this->specify('Returns false when data is not valid and errors are written',
-            function() use ($invalidData) {
+            function() use ($invalidData) {                
                 expect_not($this->arrayRepository->validateMany($invalidData));
-                expect(count($this->arrayRepository->getValidationErrors()))->equals(2);
+                expect(count($this->arrayRepository->getValidationErrors()))->equals(2);                
 
                 //carlos failures
                 expect(count($this->arrayRepository->getValidationErrors()[0]['messages']))->equals(1);
@@ -414,7 +422,7 @@ class ArrayRepositoryTest extends BaseTests {
                 //no name failures
                 expect(count($this->arrayRepository->getValidationErrors()[1]['messages']))->equals(1);
                 expect(count($this->arrayRepository->getValidationErrors()[1]['failed']))->equals(1);
-            });
+        });
     }
 
     public function testValidateManyWithCustomRules()
