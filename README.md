@@ -10,12 +10,15 @@ Laravel Repositories
 Repository pattern for Laravel
 
 # Installation and Configuration
-Add
+Add this to your composer.json
+
+```json
 {
     "require": {
         "reynholm/laravel-repositories": "0.16.*"
     }
 }
+```
 
 ## Notice
 I think that you can use it even that is on an early stage, but I may make some breaking changes so if you
