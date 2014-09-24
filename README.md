@@ -22,7 +22,7 @@ Add this to your composer.json
 
 ## Notice
 I think that you can use it even that is on an early stage, but I may make some breaking changes so if you
-don't want any surprises just don't put "dev-master", * or 0.*.* as your composer version. Be smart!
+don't want any surprises just don't put "dev-master" or an asterisk as your composer version. Be smart!
 
 If you put your version like on the above example you will not get any breaking changes.
 
