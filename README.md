@@ -9,12 +9,19 @@ Laravel Repositories
 
 Repository pattern for Laravel
 
-# Warning
-This package is currently on development. Is not ready for use yet.
-Interfaces may change.
-
 # Installation and Configuration
-to do: how to install with composer
+Add
+{
+    "require": {
+        "reynholm/laravel-repositories": "0.16.*"
+    }
+}
+
+## Notice
+I think that you can use it even that is on an early stage, but I may make some breaking changes so if you
+don't want any surprises just don't put "dev-master", "*" or "0.*.*" as your composer version. Be smart!
+
+If you put your version like on the above example you will not get any breaking changes.
 
 # Usage
 Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations.
@@ -28,6 +35,9 @@ tight coupling with laravel or eloquent
 
 ## Example
 ```php
+
+use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+
 class UserArrayRepository extends ArrayRepository
 {
     //defaults to laravel's default connection
@@ -236,14 +246,14 @@ Currently implemented methods:
      */
     public function getValidationErrors();
 
-    /*
+    /**
     * Return the messages key from the getValidationErrors method
     * If used after validateMany it will be a multidimensional array
     * @return array
     */
     public function getValidationMessages();
 
-    /*
+    /**
     * Return the failed key from the getValidationErrors method
     * If used after validateMany it will be a multidimensional array
     * @return array
@@ -368,5 +378,4 @@ So if you want to change the implementation you would need to implement the MyUs
  and LaravelRepositoryInterface.
 
 # Future
-More features coming soon like Spring-Like annotations for cache and transactions,
-entity based repositories with entity generator based on your schema, etc.
+More features coming soon
