@@ -7,6 +7,10 @@ use Illuminate\Database\Query\Builder;
 use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
+use Reynholm\LaravelRepositories\Support\Fetcher\ArrayObjectFetcher;
+use Reynholm\LaravelRepositories\Support\Fetcher\CollectionObjectFetcher;
+use Reynholm\LaravelRepositories\Support\Fetcher\FetcherInterface;
+use Reynholm\LaravelRepositories\Support\Fetcher\MultidimensionalArrayFetcher;
 use Reynholm\LaravelRepositories\Support\TableNameGuesser;
 use Reynholm\LaravelRepositories\Support\Timestamper;
 
@@ -23,7 +27,7 @@ use Reynholm\LaravelRepositories\Support\Timestamper;
  *                   Is an array with 2 keys, messages (fields that failed with message), and failed (fails without message)
  * @property Timestamper $timestamper
  */
-abstract class ArrayRepository implements LaravelRepositoryInterface
+abstract class LaravelRepository implements LaravelRepositoryInterface
 {
     protected $connection;
     protected $primaryKey = 'id';
@@ -34,9 +38,16 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     protected $stamp_create = 'created_at';
     protected $stamp_update = 'updated_at';
 
+    /**
+     * @var int Choose the fetch mode.
+     * @see LaravelRepositoryInterface for to check available fetch constants
+     */
+    protected $fetchMode = LaravelRepositoryInterface::FETCH_AS_MULTIDIMENSIONAL_ARRAY;
+
     private $validationErrors = array();
     private $builder;
     private $timestamper;
+    private $fetcher;
 
     function __construct(TableNameGuesser $tableNameGuesser, Timestamper $timestamper)
     {
@@ -46,6 +57,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
 
         $this->builder = \DB::connection($this->connection)->table($this->tableName);
         $this->timestamper = $timestamper;
+        $this->fetcher = $this->resolveFetcher();
     }
 
     /**
@@ -63,7 +75,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     {
         $searchCriteria = [ [$this->primaryKey, '=', $id] ];
 
-        return $this->findOne($searchCriteria, $columns);
+        return $this->getFetcher()->fetch( $this->findOne($searchCriteria, $columns) );
     }
 
     /**
@@ -77,7 +89,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             throw new EntityNotFoundException();
         }
 
-        return $entity;
+        return $this->getFetcher()->fetch($entity);
     }
 
     /**
@@ -101,7 +113,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             return array();
         }
 
-        return $result;
+        return $this->getFetcher()->fetch($result);
     }
 
     /**
@@ -135,7 +147,7 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
             return array();
         }
 
-        return $this->objectsToArray($result);
+        return $this->getFetcher()->fetchMany($result);
     }
 
     /**
@@ -143,7 +155,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function findAll(array $columns = array(), $limit = 0, array $orderBy = array())
     {
-        return $this->findMany([], $columns, $limit, $orderBy);
+        return $this->getFetcher()->fetchMany(
+            $this->findMany([], $columns, $limit, $orderBy)
+        );
     }
 
     /**
@@ -151,7 +165,9 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
      */
     public function lists($column, $key = null)
     {
-        return $this->getBuilder()->lists($column, $key);
+        return $this->getFetcher()->fetch(
+            $this->getBuilder()->lists($column, $key)
+        );
     }
 
     /**
@@ -400,18 +416,39 @@ abstract class ArrayRepository implements LaravelRepositoryInterface
     }
 
     /**
-     * Used to convert the stdClass array coming from the laravel query builder
-     * to an array
-     * @param array $data
-     * @return array
+     * @return FetcherInterface
      */
-    protected function objectsToArray($data)
+    protected function getFetcher()
     {
-        array_walk($data, function(&$row) {
-            $row = (array)$row;
-        });
+        return $this->fetcher;
+    }
 
-        return $data;
+    /**
+     * You can override this if you want to use a custom fetcher
+     * @throws \Exception
+     * @return FetcherInterface
+     */
+    protected function resolveFetcher()
+    {
+        switch ($this->fetchMode) {
+            case LaravelRepositoryInterface::FETCH_AS_MULTIDIMENSIONAL_ARRAY:
+                return new MultidimensionalArrayFetcher();
+            case LaravelRepositoryInterface::FETCH_AS_ARRAY_OF_OBJECTS:
+                return new ArrayObjectFetcher();
+            case LaravelRepositoryInterface::FETCH_AS_LARAVEL_COLLECTION_OBJECTS:
+                return new CollectionObjectFetcher();
+        }
+
+        throw new \Exception('Fetcher not supported: ' . $this->fetchMode);
+    }
+
+    /**
+     * Use this to change the fetcher at runtime
+     * @param FetcherInterface $fetcherInterface
+     */
+    public function setFetcher(FetcherInterface $fetcherInterface)
+    {
+        $this->fetcher = $fetcherInterface;
     }
 
 }

@@ -7,6 +7,10 @@ use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 
 interface LaravelRepositoryInterface
 {
+    const FETCH_AS_MULTIDIMENSIONAL_ARRAY = 1;
+    const FETCH_AS_LARAVEL_COLLECTION_OBJECTS = 2;
+    const FETCH_AS_ARRAY_OF_OBJECTS = 3;
+
     /**
      * @param int $id
      * @param array $columns Restrict columns that you want to retrieve

@@ -2,9 +2,9 @@
 
 namespace tests\repository;
 
-use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+use Reynholm\LaravelRepositories\Repository\LaravelRepository;
 
-class DownloadRepository extends ArrayRepository
+class DownloadRepository extends LaravelRepository
 {
     protected $timestamps = true;
 } 

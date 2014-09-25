@@ -3,7 +3,7 @@
 namespace tests\functional\Reynholm\LaravelRepositories\Repository;
 
 use DateTime;
-use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+use Reynholm\LaravelRepositories\Repository\LaravelRepository;
 
 use tests\BaseTests;
 use tests\fixtures\UserFixtures;
@@ -16,7 +16,7 @@ use tests\fixtures\UserFixtures;
  *
  * @package tests\unit\Reynholm\LaravelRepositories\Repository
  *
- * @property ArrayRepository $arrayRepository
+ * @property LaravelRepository $arrayRepository
  * @property UserFixtures $userFixtures
  */
 class ArrayRepositoryTimestampsTest extends BaseTests {

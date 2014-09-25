@@ -2,9 +2,9 @@
 
 namespace tests\repository;
 
-use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+use Reynholm\LaravelRepositories\Repository\LaravelRepository;
 
-class UserRepository extends ArrayRepository {
+class UserRepository extends LaravelRepository {
 
     protected $rules      = array(
         'name' => 'required|min:5|unique:users',

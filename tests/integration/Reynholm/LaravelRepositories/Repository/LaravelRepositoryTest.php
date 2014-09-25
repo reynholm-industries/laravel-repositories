@@ -3,7 +3,7 @@
 namespace tests\functional\Reynholm\LaravelRepositories\Repository;
 
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
-use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+use Reynholm\LaravelRepositories\Repository\LaravelRepository;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 
 use tests\BaseTests;
@@ -14,10 +14,10 @@ use tests\repository\UserRepository;
  * Class ArrayRepositoryTest
  * @package tests\unit\Reynholm\LaravelRepositories\Repository
  *
- * @property ArrayRepository $arrayRepository
+ * @property LaravelRepository $arrayRepository
  * @property UserFixtures $userFixtures
  */
-class ArrayRepositoryTest extends BaseTests {
+class LaravelRepositoryTest extends BaseTests {
 
 
     private $arrayRepository;
@@ -34,7 +34,7 @@ class ArrayRepositoryTest extends BaseTests {
 
     public function testType()
     {
-        $expectedClass = 'Reynholm\LaravelRepositories\Repository\ArrayRepository';
+        $expectedClass = 'Reynholm\LaravelRepositories\Repository\LaravelRepository';
 
         $this->assertInstanceOf($expectedClass, $this->arrayRepository);
     }

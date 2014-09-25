@@ -27,21 +27,14 @@ don't want any surprises just don't put "dev-master" or an asterisk as your comp
 If you put your version like on the above example you will not get any breaking changes.
 
 # Usage
-Simply extend one of the currently Reynholm\LaravelRepositories\Repository implementations.
-
-Currently available:
-
-· Reynholm\LaravelRepositories\Repository\ArrayRepository
-
-Lightway implementation that allows you retrieve data as arrays so there is no
-tight coupling with laravel or eloquent
+Simply extend the abstract class Reynholm\LaravelRepositories\Repository\LaravelRepository
 
 ## Example
 ```php
 
-use Reynholm\LaravelRepositories\Repository\ArrayRepository;
+use Reynholm\LaravelRepositories\Repository\LaravelRepository;
 
-class UserArrayRepository extends ArrayRepository
+class UserArrayRepository extends LaravelRepository
 {
     //defaults to laravel's default connection
 	//protected $connection = 'mysql';
@@ -52,6 +45,19 @@ class UserArrayRepository extends ArrayRepository
     //protected $tableName  = 'users';
 }
 ```
+
+## Fetch Mode
+You can also choose the fetcher that you like the most or create your own.
+You can select the one that you prefer from the LaravelRepositoryInterface constants.
+Example:
+
+```php
+    class YourRepository extends LaravelRepository {
+        protected $fetchMode = LaravelRepositoryInterface::FETCH_AS_LARAVEL_COLLECTION_OBJECTS;
+    }
+```
+
+So the repository will return a Illuminate\Support\Collection with objects.
 
 Currently implemented methods:
 ```php
@@ -286,7 +292,7 @@ Currently implemented methods:
 ## Timestamps
 You can add timestamps adding the $timestamps = true property:
 ```php
-class DownloadRepository extends ArrayRepository
+class DownloadRepository extends LaravelRepository
 {
     protected $timestamps = true;
 }
@@ -304,7 +310,7 @@ protected $stamp_update = 'updated_at';
 You can validate your data with the validate methods.
 Specify the rules of your repository in the rules property:
 ```php
-class UserArrayRepository extends ArrayRepository {
+class UserArrayRepository extends LaravelRepository {
 
     protected $connection = 'default';
     protected $tableName  = 'users';
@@ -338,7 +344,7 @@ to create your custom repository methods.
 
 ### Example
 ```php
-class MyUserRepository extends ArrayRepository
+class MyUserRepository extends LaravelRepository
 {
     public function getActiveUsers()
     {
@@ -364,7 +370,7 @@ interface MyUserRepositoryInterface
 ```
 And then implement it on your repository:
 ```php
-class MyUserRepository extends ArrayRepository implements MyUserRepositoryInterface
+class MyUserRepository extends LaravelRepository implements MyUserRepositoryInterface
 {
     /**
     * {@inheritdoc}
@@ -372,7 +378,12 @@ class MyUserRepository extends ArrayRepository implements MyUserRepositoryInterf
     public function getActiveUsers()
     {
         $result = $this->getBuilder()->whereActive(true)->get();
-        return $this->objectsToArray($result);
+
+        //In order to return the data with the current fetcher use the getFetcher() method like this:
+        return $this->getFetcher()->fetchMany($result);
+
+        //If you are returning only one entity use fetch method instead
+        return $this->getFetcher()->fetch();
     }
 }
 ```
