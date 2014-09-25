@@ -15,7 +15,7 @@ Add this to your composer.json
 ```json
 {
     "require": {
-        "reynholm/laravel-repositories": "0.16.*"
+        "reynholm/laravel-repositories": "0.17.*"
     }
 }
 ```
