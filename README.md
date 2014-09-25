@@ -350,9 +350,8 @@ class MyUserRepository extends LaravelRepository
     {
         $result = $this->getBuilder()->whereActive(true)->get();
 
-        //Builder returns an objects array so you can use the following method
-        //to convert an array of objets to array
-        return $this->objectsToArray($result);
+        //and let the fetcher do it's job
+        return $this->getFetcher()->fetchMany($result);
     }
 }
 ```
