@@ -4,7 +4,7 @@ namespace tests\unit\Reynholm\LaravelRepositories\Support\Fetcher;
 
 use Illuminate\Support\Collection;
 
-class ArrayCollectionFetcherTest extends \tests\BaseTests {
+class CollectionObjectFetcherTest extends \tests\BaseTests {
 
     /** @var  \Reynholm\LaravelRepositories\Support\Fetcher\CollectionObjectFetcher */
     protected $fetcher;

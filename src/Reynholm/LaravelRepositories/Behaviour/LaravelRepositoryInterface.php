@@ -4,12 +4,14 @@ namespace Reynholm\LaravelRepositories\Behaviour;
 
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
+use Reynholm\LaravelRepositories\Support\Fetcher\FetcherInterface;
 
 interface LaravelRepositoryInterface
 {
     const FETCH_AS_MULTIDIMENSIONAL_ARRAY = 1;
     const FETCH_AS_LARAVEL_COLLECTION_OBJECTS = 2;
     const FETCH_AS_ARRAY_OF_OBJECTS = 3;
+    const FETCH_AS_LARAVEL_COLLECTION_ARRAY = 4;
 
     /**
      * @param int $id
@@ -231,4 +233,11 @@ interface LaravelRepositoryInterface
      * @return int Number of deleted rows
      */
     public function deleteAll();
+
+    /**
+     * Change fetch mode at runtime
+     * @param FetcherInterface $fetcherInterface
+     * @return void
+     */
+    public function setFetcher(FetcherInterface $fetcherInterface);
 } 

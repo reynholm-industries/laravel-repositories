@@ -8,6 +8,7 @@ use Reynholm\LaravelRepositories\Behaviour\LaravelRepositoryInterface;
 use Reynholm\LaravelRepositories\Exception\DataNotValidException;
 use Reynholm\LaravelRepositories\Exception\EntityNotFoundException;
 use Reynholm\LaravelRepositories\Support\Fetcher\ArrayObjectFetcher;
+use Reynholm\LaravelRepositories\Support\Fetcher\CollectionArrayFetcher;
 use Reynholm\LaravelRepositories\Support\Fetcher\CollectionObjectFetcher;
 use Reynholm\LaravelRepositories\Support\Fetcher\FetcherInterface;
 use Reynholm\LaravelRepositories\Support\Fetcher\MultidimensionalArrayFetcher;
@@ -437,6 +438,8 @@ abstract class LaravelRepository implements LaravelRepositoryInterface
                 return new ArrayObjectFetcher();
             case LaravelRepositoryInterface::FETCH_AS_LARAVEL_COLLECTION_OBJECTS:
                 return new CollectionObjectFetcher();
+            case LaravelRepositoryInterface::FETCH_AS_LARAVEL_COLLECTION_ARRAY:
+                return new CollectionArrayFetcher();
         }
 
         throw new \Exception('Fetcher not supported: ' . $this->fetchMode);
