@@ -41,5 +41,5 @@ class LaravelRepositoryTest extends BaseTests
 
         $this->assertEquals([[1,2,3]], $this->repository->findMany([['id', '=', 1]]));
     }
-    
+
 } 
