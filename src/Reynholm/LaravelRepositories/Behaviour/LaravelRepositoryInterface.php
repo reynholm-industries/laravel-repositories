@@ -202,14 +202,14 @@ interface LaravelRepositoryInterface
      */
     public function getValidationErrors();
 
-    /*
+    /**
     * Return the messages key from the getValidationErrors method
     * If used after validateMany it will be a multidimensional array
     * @return array
     */
     public function getValidationMessages();
 
-    /*
+    /**
     * Return the failed key from the getValidationErrors method
     * If used after validateMany it will be a multidimensional array
     * @return array
@@ -240,4 +240,20 @@ interface LaravelRepositoryInterface
      * @return void
      */
     public function setFetcher(FetcherInterface $fetcherInterface);
+
+    /**
+     * Returns one row of data depending on the used fetcher
+     * It is a shortcut for getFetcher()->fetch()
+     * @param $data
+     * @return mixed
+     */
+    public function fetch($data);
+
+    /**
+     * Returns multiple rows of data depending on the used fetcher
+     * It is a shortcut for getFetcher()->fetchMany()
+     * @param $data
+     * @return mixed
+     */
+    public function fetchMany($data);
 } 

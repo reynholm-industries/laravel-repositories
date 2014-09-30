@@ -417,14 +417,6 @@ abstract class LaravelRepository implements LaravelRepositoryInterface
     }
 
     /**
-     * @return FetcherInterface
-     */
-    protected function getFetcher()
-    {
-        return $this->fetcher;
-    }
-
-    /**
      * You can override this if you want to use a custom fetcher
      * @throws \Exception
      * @return FetcherInterface
@@ -453,5 +445,30 @@ abstract class LaravelRepository implements LaravelRepositoryInterface
     {
         $this->fetcher = $fetcherInterface;
     }
+
+    /**
+     * @return FetcherInterface
+     */
+    protected function getFetcher()
+    {
+        return $this->fetcher;
+    }
+
+    /**
+     * @{@inheritdoc
+     */
+    public function fetch($data)
+    {
+        return $this->getFetcher()->fetch($data);
+    }
+
+    /**
+     * @{@inheritdoc
+     */
+    public function fetchMany($data)
+    {
+        return $this->getFetcher()->fetchMany($data);
+    }
+
 
 }

@@ -351,7 +351,7 @@ class MyUserRepository extends LaravelRepository
         $result = $this->getBuilder()->whereActive(true)->get();
 
         //and let the fetcher do it's job
-        return $this->getFetcher()->fetchMany($result);
+        return $this->fetchMany($result);
     }
 }
 ```
@@ -379,10 +379,10 @@ class MyUserRepository extends LaravelRepository implements MyUserRepositoryInte
         $result = $this->getBuilder()->whereActive(true)->get();
 
         //In order to return the data with the current fetcher use the getFetcher() method like this:
-        return $this->getFetcher()->fetchMany($result);
+        return $this->fetchMany($result);
 
         //If you are returning only one entity use fetch method instead
-        return $this->getFetcher()->fetch();
+        return $this->fetch($result);
     }
 }
 ```
