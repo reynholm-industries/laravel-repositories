@@ -38,7 +38,7 @@ class LaravelRepositoryFetcherTest extends BaseTests {
         $this->prepareDatabase();
     }
 
-    public function testUsingANonExistingFetcherCauseOnAExceptionBeingThrowed()
+    public function testUsingANonExistingFetcherCauseOnAExceptionBeingThrown()
     {
         $this->setExpectedException('\Exception', 'Fetcher not supported: custom-fetcher');
 

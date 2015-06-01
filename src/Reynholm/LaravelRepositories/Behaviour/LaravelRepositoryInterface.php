@@ -75,7 +75,7 @@ interface LaravelRepositoryInterface
 
     /**
      * @param array $data The resource that you want to create
-     * @param bool $force If force is false and data is not valid error will be throwed
+     * @param bool $force If force is false and data is not valid error will be thrown
      * @return boolean
      * @throws DataNotValidException
      */
@@ -83,7 +83,7 @@ interface LaravelRepositoryInterface
 
     /**
      * @param array $data The resources that you want to create
-     * @param bool $force If force is false and data is not valid error will be throwed
+     * @param bool $force If force is false and data is not valid error will be thrown
      * @return boolean
      * @throws DataNotValidException
      */
@@ -118,7 +118,7 @@ interface LaravelRepositoryInterface
 
     /**
      * Validates the input array and stores all the errors,
-     * them, you can get them with the getErrors() method
+     * them, you can get them with the getValidationErrors() method
      * @param array $data
      * @return boolean
      */
@@ -126,8 +126,8 @@ interface LaravelRepositoryInterface
 
     /**
      * Validates the input array and stores all the errors,
-     * them, you can get them with the getErrors() method
-     * Same af validate but specify the rules, instead of using the repository rules
+     * them, you can get them with the getValidationErrors() method
+     * Same as validate but specify the rules, instead of using the repository rules
      * @param array $data
      * @param array $rules
      * @return boolean
@@ -168,7 +168,7 @@ interface LaravelRepositoryInterface
      * Validates a multidimensional
      * It also stores all the errors. Then you can retrieve them with the
      * getValidationErrors() method
-     * Same af validate but specify the rules, instead of using the repository rules
+     * Same as validate but specify the rules, instead of using the repository rules
      * @param array $data
      * @param array $rules
      * @return boolean
@@ -256,4 +256,4 @@ interface LaravelRepositoryInterface
      * @return mixed
      */
     public function fetchMany($data);
-} 
+}

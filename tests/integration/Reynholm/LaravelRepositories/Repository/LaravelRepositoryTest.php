@@ -370,7 +370,7 @@ class LaravelRepositoryTest extends BaseTests {
             expect( $this->arrayRepository->validateWithCustomRulesOrFail($invalidData, $ageRequired) )->equals(null);
         }, ['throws' => new DataNotValidException()]);
 
-        $this->specify('The errors should be saved anyway even if exception is throwed', function() use ($invalidData, $ageRequired) {
+        $this->specify('The errors should be saved anyway even if exception is thrown', function() use ($invalidData, $ageRequired) {
 
             try {
                 $this->arrayRepository->validateWithCustomRulesOrFail($invalidData, $ageRequired);
@@ -509,7 +509,7 @@ class LaravelRepositoryTest extends BaseTests {
             $this->arrayRepository->validateManyWithCustomRulesOrFail($invalidData, $rules);
         }, ['throws' => new DataNotValidException()] );
 
-        $this->specify('The errors should be saved anyway even if exception is throwed', function() use ($invalidData, $rules) {
+        $this->specify('The errors should be saved anyway even if exception is thrown', function() use ($invalidData, $rules) {
 
             try {
                 $this->arrayRepository->validateManyWithCustomRulesOrFail($invalidData, $rules);
