@@ -20,6 +20,9 @@ Add this to your composer.json
 }
 ```
 
+# Abandoned
+This package is abandoned as you can see on packagist. I moved to python and I have no time for keeping this repo up to date with Laravel. Feel free to fork it and maintaining it yourself.
+
 ## Notice
 I think that you can use it even that is on an early stage, but I may make some breaking changes so if you
 don't want any surprises just don't put "dev-master" or an asterisk as your composer version. Be smart!
