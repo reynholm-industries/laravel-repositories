@@ -20,7 +20,7 @@ Add this to your composer.json
 }
 ```
 
-# Abandoned
+# !Abandoned¡
 This package is abandoned as you can see on packagist. I moved to python and I have no time for keeping this repo up to date with Laravel. Feel free to fork it and maintaining it yourself.
 
 ## Notice
